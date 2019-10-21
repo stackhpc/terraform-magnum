@@ -3,11 +3,11 @@
 Prerequisites:
 - OpenStack Queens, Magnum Stein 8.1.0 minimum
 - Terraform v0.12.10, provider.openstack v1.23.0
-- `clouds.yaml` configured with OpenStack credentials
 
 To deploy:
 - `cp terraform.tfvars{.sample,}`
 - Edit `terraform.tfvars` and fit your OpenStack environment.
+- Source your openstack environment variables, e.g. `source openrc.sh`
 - `terraform init && terraform apply`
 - Optionally attach floating ip to the master node:
 

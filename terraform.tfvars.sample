@@ -1,5 +1,7 @@
-cloud = "cumulus-dev"
 cluster_name = "k8s"
+network_driver = "calico"
+master_count = 1
+node_count = 2
 flavor_name = "general.v1.tiny"
 image_name = "FedoraAtomic29-20190820"
 keypair_name = "default"

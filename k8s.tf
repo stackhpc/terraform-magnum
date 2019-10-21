@@ -38,6 +38,21 @@ variable "flavor_name" {
   default = "general.v1.tiny"
 }
 
+variable "network_driver" {
+  type = string
+  default = "flannel"
+}
+
+variable "master_count" {
+  type = number
+  default = 1
+}
+
+variable "node_count" {
+  type = number
+  default = 2
+}
+
 resource "openstack_compute_keypair_v2" "keypair" {
   name       = "default"
   public_key = "${file("${var.public_key_file}")}"
@@ -50,14 +65,15 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
   flavor                = "${var.flavor_name}"
   master_flavor         = "${var.flavor_name}"
   docker_storage_driver = "overlay2"
-  network_driver        = "flannel"
+  network_driver        = "${var.network_driver}"
   server_type           = "vm"
   external_network_id   = "${var.external_network_name}"
   fixed_network         = "${var.fixed_network_name}"
   fixed_subnet          = "${var.fixed_subnet_name}"
-  master_lb_enabled     = false
+  master_lb_enabled     = true
   floating_ip_enabled   = false
   labels = {
+    master_lb_floating_ip_enabled="true"
     cgroup_driver="cgroupfs"
     ingress_controller="traefik"
     tiller_enabled="true"
@@ -67,7 +83,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
     autoscaler_tag="v1.0"
     min_node_count="1"
     max_node_count="5"
-    kube_tag="v1.14.6"
+    kube_tag="v1.14.8"
     cloud_provider_tag="v1.14.0"
     heat_container_agent_tag="train-dev"
   }
@@ -76,7 +92,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
 resource "openstack_containerinfra_cluster_v1" "cluster" {
   name                 = "${var.cluster_name}"
   cluster_template_id  = "${openstack_containerinfra_clustertemplate_v1.cluster_template.id}"
-  master_count         = 1
-  node_count           = 2
+  master_count         = "${var.master_count}"
+  node_count           = "${var.node_count}"
   keypair              = "${openstack_compute_keypair_v2.keypair.id}"
 }
