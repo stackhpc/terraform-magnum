@@ -74,8 +74,8 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
   floating_ip_enabled   = false
   labels = {
     master_lb_floating_ip_enabled="true"
-    cgroup_driver="cgroupfs"
-    ingress_controller="traefik"
+    ingress_controller="octavia"
+    octavia_ingress_controller_tag="v1.14.0"
     tiller_enabled="true"
     tiller_tag="v2.14.3"
     monitoring_enabled="true"
@@ -95,4 +95,8 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
   master_count         = "${var.master_count}"
   node_count           = "${var.node_count}"
   keypair              = "${openstack_compute_keypair_v2.keypair.id}"
+
+  provisioner "local-exec" {
+    command = "openstack coe cluster config ${var.cluster_name} --dir ~/.kube/ --force"
+  }
 }
