@@ -4,7 +4,6 @@ master_count = 1
 node_count = 2
 flavor_name = "general.v1.tiny"
 image_name = "FedoraAtomic29-20190820"
-keypair_name = "default"
 fixed_network_name = "demo-vxlan"
 fixed_subnet_name = "demo-vxlan"
 external_network_name = "internet"
