@@ -92,7 +92,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
     autoscaler_tag="v1.0"
     min_node_count="1"
     max_node_count="5"
-    kube_tag="v1.14.8"
+    kube_tag="v1.14.6"
     cloud_provider_tag="v1.14.0"
     heat_container_agent_tag="train-stable"
   }
