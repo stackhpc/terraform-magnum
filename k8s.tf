@@ -1,3 +1,8 @@
+variable "cluster_template_name" {
+  type = string
+  default = "k8s"
+}
+
 variable "cluster_name" {
   type = string
   default = "k8s"
@@ -69,12 +74,13 @@ resource "openstack_compute_keypair_v2" "keypair" {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
-  name                  = "k8s"
+  name                  = "${var.cluster_template_name}"
   image                 = "${var.image_name}"
   coe                   = "kubernetes"
   flavor                = "${var.flavor_name}"
   master_flavor         = "${var.flavor_name}"
   docker_storage_driver = "overlay2"
+  volume_driver         = "cinder"
   network_driver        = "${var.network_driver}"
   server_type           = "vm"
   external_network_id   = "${var.external_network_id}"

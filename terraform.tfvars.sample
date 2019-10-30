@@ -1,3 +1,4 @@
+cluster_template_name = "k8s"
 cluster_name = "k8s"
 network_driver = "calico"
 master_count = 1

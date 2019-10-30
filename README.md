@@ -39,3 +39,30 @@ Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
     I1017 14:00:24.283658       1 magnum_manager_heat.go:280] Waited for stack UPDATE_IN_PROGRESS status
     I1017 14:01:25.030818       1 magnum_manager_heat.go:280] Waited for stack UPDATE_COMPLETE status
     I1017 14:01:58.970490       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
+
+To attach cinder volumes:
+
+    openstack volume create nginx-volume --size 100
+
+    cat > nginx-cinder.yaml << END
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: cinder-web
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          volumeMounts:
+            - name: html-volume
+              mountPath: "/usr/share/nginx/html"
+      volumes:
+        - name: html-volume
+          cinder:
+            # Enter the volume ID below
+            volumeID: `openstack volume show nginx-volume -f value -c id`
+            fsType: ext4
+    END
+
+    kubectl apply -f nginx-cinder.yaml
+
