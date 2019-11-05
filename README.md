@@ -44,7 +44,7 @@ To attach cinder volumes:
 
     openstack volume create nginx-volume --size 100
 
-    cat > nginx-cinder.yaml << END
+    cat <<END | kubectl apply -f -
     apiVersion: v1
     kind: Pod
     metadata:
@@ -64,5 +64,50 @@ To attach cinder volumes:
             fsType: ext4
     END
 
-    kubectl apply -f nginx-cinder.yaml
+To use Cinder as the default storage class:
 
+    cat <<END | kubectl apply -f -
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: cinder
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "true"
+    provisioner: kubernetes.io/cinder
+    END
+
+You can then proceed to spawn a PVC as before as follows:
+
+    cat <<END | kubectl apply -f -
+    kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: nginx
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi # pass here the size of the volume
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: web
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          ports:
+            - name: web
+              containerPort: 80
+              hostPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: mypd
+      volumes:
+        - name: mypd
+          persistentVolumeClaim:
+            claimName: nginx
+    END
