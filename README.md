@@ -111,3 +111,34 @@ You can then proceed to spawn a PVC as before as follows:
           persistentVolumeClaim:
             claimName: nginx
     END
+
+Cluster proportional autoscaler fix for Magnum pre-Stein 8.2.0
+
+    kubectl set image deploy/kube-dns-autoscaler autoscaler=gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.1.2 -n kube-system
+
+# Ingress
+
+It is then necessary to label your node of choice as an ingress node, we are going to label the one that matches `minion-0`:
+
+    kubectl label `kubectl get nodes -o wide | grep minion-0 | awk '{ print $1}'` role=ingress
+
+As an example, you can now proceed to map an Ingress to a service in the same Kubernetes namespace as follows:
+    
+    cat <<END | kubectl apply -f -
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+      name: grafana-ingress
+      namespace: monitoring
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+    spec:
+        rules:
+          - host: "grafana.`kubectl get nodes -o wide | grep minion-0 | awk '{ print $7}'`.nip.io"
+            http:
+              paths:
+                - backend:
+                      serviceName: prometheus-operator-grafana
+                      servicePort: 80
+                  path: "/"
+    END
