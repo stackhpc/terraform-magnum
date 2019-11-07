@@ -120,7 +120,7 @@ Cluster proportional autoscaler fix for Magnum pre-Stein 8.2.0
 
 It is then necessary to label your node of choice as an ingress node, we are going to label the one that matches `minion-0`:
 
-    kubectl label `kubectl get nodes -o wide | grep minion-0 | awk '{ print $1}'` role=ingress
+    kubectl label `kubectl get nodes -o NAME | grep minion-0 | awk '{ print $1}'` role=ingress
 
 As an example, you can now proceed to map an Ingress to a service in the same Kubernetes namespace as follows:
     
@@ -134,7 +134,7 @@ As an example, you can now proceed to map an Ingress to a service in the same Ku
         kubernetes.io/ingress.class: "nginx"
     spec:
         rules:
-          - host: "grafana.`kubectl get nodes -o wide | grep minion-0 | awk '{ print $7}'`.nip.io"
+          - host: "grafana.`kubectl get nodes -l role=ingress -o jsonpath={.items[*].status.addresses[?\(@.type==\"ExternalIP\"\)].address}`.nip.io"
             http:
               paths:
                 - backend:
@@ -142,3 +142,7 @@ As an example, you can now proceed to map an Ingress to a service in the same Ku
                       servicePort: 80
                   path: "/"
     END
+
+You will also need to ensure that the security group rules allow access to HTTP endpoints.
+
+    for name in `openstack security group list -c Name -f value | grep minion`; do openstack security group rule create --ingress $name --dst-port 80 --protocol tcp; done
