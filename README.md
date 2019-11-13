@@ -40,6 +40,10 @@ Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
     I1017 14:01:25.030818       1 magnum_manager_heat.go:280] Waited for stack UPDATE_COMPLETE status
     I1017 14:01:58.970490       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
 
+# Cinder Volume
+
+In order to ensure support for cinder volumes, ensure that `volume_driver = "cinder"` in `terraform.tfvars`.
+
 To attach cinder volumes:
 
     openstack volume create nginx-volume --size 100

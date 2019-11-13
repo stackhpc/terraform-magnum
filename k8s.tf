@@ -43,6 +43,11 @@ variable "master_flavor_name" {
   default = "general.v1.tiny"
 }
 
+variable "volume_driver" {
+  type = string
+  default = ""
+}
+
 variable "network_driver" {
   type = string
   default = "flannel"
@@ -85,7 +90,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
   flavor                = "${var.flavor_name}"
   master_flavor         = "${var.master_flavor_name}"
   docker_storage_driver = "overlay2"
-  volume_driver         = "cinder"
+  volume_driver         = "${var.volume_driver}"
   network_driver        = "${var.network_driver}"
   server_type           = "vm"
   external_network_id   = "${var.external_network_id}"
