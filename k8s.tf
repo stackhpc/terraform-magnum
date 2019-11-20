@@ -88,6 +88,11 @@ variable "fip_enabled" {
   default = "true"
 }
 
+variable "hca_tag" {
+  type = string
+  default = "train-stable"
+}
+
 resource "openstack_compute_keypair_v2" "keypair" {
   name       = "default"
   public_key = "${file("${var.public_key_file}")}"
@@ -134,6 +139,6 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     use_podman="${var.use_podman}"
     kube_tag="${var.kube_tag}"
     cloud_provider_tag="v1.14.0"
-    heat_container_agent_tag="train-dev"
+    heat_container_agent_tag="${var.hca_tag}"
   }
 }
