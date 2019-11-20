@@ -63,6 +63,16 @@ variable "node_count" {
   default = 2
 }
 
+variable "kube_tag" {
+  type = string
+  default = "v1.16.2"
+}
+
+variable "use_podman" {
+  type = string
+  default = "true"
+}
+
 variable "ingress_controller" {
   type = string
   default = "nginx"
@@ -98,20 +108,6 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
   fixed_subnet          = "${var.fixed_subnet_id}"
   master_lb_enabled     = "${var.master_fip_enabled}"
   floating_ip_enabled   = "${var.fip_enabled}"
-  labels = {
-    master_lb_floating_ip_enabled="${var.master_fip_enabled}"
-    ingress_controller="${var.ingress_controller}"
-    tiller_enabled="true"
-    tiller_tag="v2.14.3"
-    monitoring_enabled="true"
-    auto_scaling_enabled="true"
-    autoscaler_tag="v1.0"
-    min_node_count="1"
-    max_node_count="5"
-    kube_tag="v1.14.6"
-    cloud_provider_tag="v1.14.0"
-    heat_container_agent_tag="train-stable"
-  }
 }
 
 resource "openstack_containerinfra_cluster_v1" "cluster" {
@@ -123,5 +119,21 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
 
   provisioner "local-exec" {
     command = "openstack coe cluster config ${var.cluster_name} --dir ~/.kube/ --force"
+  }
+
+  labels = {
+    master_lb_floating_ip_enabled="${var.master_fip_enabled}"
+    ingress_controller="${var.ingress_controller}"
+    tiller_enabled="true"
+    tiller_tag="v2.14.3"
+    monitoring_enabled="true"
+    auto_scaling_enabled="true"
+    autoscaler_tag="v1.0"
+    min_node_count="1"
+    max_node_count="5"
+    use_podman="${var.use_podman}"
+    kube_tag="${var.kube_tag}"
+    cloud_provider_tag="v1.14.0"
+    heat_container_agent_tag="train-stable"
   }
 }
