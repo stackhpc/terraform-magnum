@@ -134,6 +134,6 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     use_podman="${var.use_podman}"
     kube_tag="${var.kube_tag}"
     cloud_provider_tag="v1.14.0"
-    heat_container_agent_tag="train-stable"
+    heat_container_agent_tag="train-dev"
   }
 }
