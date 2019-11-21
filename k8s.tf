@@ -65,12 +65,12 @@ variable "node_count" {
 
 variable "kube_tag" {
   type = string
-  default = "v1.16.2"
+  default = "v1.16.3"
 }
 
 variable "etcd_tag" {
   type = string
-  default = ""
+  default = "3.2.26"
 }
 
 variable "use_podman" {
