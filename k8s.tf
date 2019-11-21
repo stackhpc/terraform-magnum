@@ -68,6 +68,11 @@ variable "kube_tag" {
   default = "v1.16.2"
 }
 
+variable "etcd_tag" {
+  type = string
+  default = ""
+}
+
 variable "use_podman" {
   type = string
   default = "true"
@@ -138,6 +143,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     max_node_count="5"
     use_podman="${var.use_podman}"
     kube_tag="${var.kube_tag}"
+    etcd_tag="${var.etcd_tag}"
     cloud_provider_tag="v1.14.0"
     heat_container_agent_tag="${var.hca_tag}"
   }
