@@ -134,9 +134,12 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
   labels = {
     master_lb_floating_ip_enabled="${var.master_fip_enabled}"
     ingress_controller="${var.ingress_controller}"
+    nginx_ingress_controller_tag="0.26.1"
+    nginx_ingress_controller_chart_tag="1.24.7"
     tiller_enabled="true"
-    tiller_tag="v2.14.3"
+    tiller_tag="v2.15.1"
     monitoring_enabled="true"
+    prometheus_operator_chart_tag="8.2.2"
     auto_scaling_enabled="true"
     autoscaler_tag="v1.0"
     min_node_count="1"
