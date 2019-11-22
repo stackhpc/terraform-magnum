@@ -63,6 +63,11 @@ variable "node_count" {
   default = 2
 }
 
+variable "max_node_count" {
+  type = number
+  default = 4
+}
+
 variable "kube_tag" {
   type = string
   default = "v1.16.3"
@@ -142,8 +147,8 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     prometheus_operator_chart_tag="8.2.2"
     auto_scaling_enabled="true"
     autoscaler_tag="v1.0"
-    min_node_count="1"
-    max_node_count="5"
+    min_node_count="${var.node_count}"
+    max_node_count="${var.max_node_count}"
     use_podman="${var.use_podman}"
     kube_tag="${var.kube_tag}"
     etcd_tag="${var.etcd_tag}"
