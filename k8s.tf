@@ -70,7 +70,7 @@ variable "kube_tag" {
 
 variable "etcd_tag" {
   type = string
-  default = "3.2.26"
+  default = ""
 }
 
 variable "use_podman" {
@@ -135,7 +135,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     master_lb_floating_ip_enabled="${var.master_fip_enabled}"
     ingress_controller="${var.ingress_controller}"
     nginx_ingress_controller_tag="0.26.1"
-    nginx_ingress_controller_chart_tag="1.24.7"
+    #nginx_ingress_controller_chart_tag="1.24.7"
     tiller_enabled="true"
     tiller_tag="v2.15.1"
     monitoring_enabled="true"
