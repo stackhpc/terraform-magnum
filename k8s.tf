@@ -15,12 +15,12 @@ variable "external_network_id" {
 
 variable "fixed_network_name" {
   type = string
-  default = "fixed-network-name"
+  default = ""
 }
 
 variable "fixed_subnet_id" {
   type = string
-  default = "fixed-subnet-id"
+  default = ""
 }
 
 variable "image_name" {
@@ -85,7 +85,7 @@ variable "use_podman" {
 
 variable "ingress_controller" {
   type = string
-  default = "nginx"
+  default = ""
 }
 
 variable "master_fip_enabled" {
