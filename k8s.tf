@@ -158,5 +158,6 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     etcd_tag                            = var.etcd_tag
     cloud_provider_tag                  = "v1.15.0"
     heat_container_agent_tag            = var.hca_tag
+    metrics_server_enabled		= "false"
   }
 }
