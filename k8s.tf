@@ -73,6 +73,11 @@ variable "kube_tag" {
   default = "v1.16.3"
 }
 
+variable "cloud_provider_tag" {
+  type = string
+  default = "v1.16.0"
+}
+
 variable "etcd_tag" {
   type = string
   default = ""
@@ -144,9 +149,9 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     master_lb_floating_ip_enabled       = var.master_fip_enabled
     ingress_controller                  = var.ingress_controller
     nginx_ingress_controller_tag        = "0.26.1"
-    #nginx_ingress_controller_chart_tag = "1.24.7"
+    nginx_ingress_controller_chart_tag = "1.24.7"
     tiller_enabled                      = "true"
-    tiller_tag                          = "v2.15.1"
+    tiller_tag                          = "v2.16.0"
     monitoring_enabled                  = "true"
     prometheus_operator_chart_tag       = "8.2.2"
     auto_scaling_enabled                = "true"
@@ -156,7 +161,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
     use_podman                          = var.use_podman
     kube_tag                            = var.kube_tag
     etcd_tag                            = var.etcd_tag
-    cloud_provider_tag                  = "v1.15.0"
+    cloud_provider_tag                  = var.cloud_provider_tag
     heat_container_agent_tag            = var.hca_tag
   }
 }
