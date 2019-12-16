@@ -120,6 +120,23 @@ Cluster proportional autoscaler fix for Magnum pre-Stein 8.2.0
 
     kubectl set image deploy/kube-dns-autoscaler autoscaler=gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.1.2 -n kube-system
 
+# Helm
+
+To use helm with tiller installed on the cluster, first of all, install `helm`:
+
+    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+
+Now source `magnum-tiller.sh` to use tiller installed in the `magnum-tiller` namespace.
+
+    source magnum-tiller.sh
+    helm version
+
+If there is a mismatch between the intalled version of helm client and tiller installed on the server, upgrade tiller.
+
+    helm init --upgrade
+
+NOTE: magnum currently uses Helm 2, and tiller has been deprecated in Helm 3.
+
 # Ingress
 
 It is then necessary to label your node of choice as an ingress node, we are going to label the one that matches `minion-0`:
