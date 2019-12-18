@@ -48,11 +48,6 @@ variable "volume_driver" {
   default = "cinder"
 }
 
-variable "network_driver" {
-  type = string
-  default = "flannel"
-}
-
 variable "master_count" {
   type = number
   default = 1
@@ -150,12 +145,12 @@ resource "openstack_compute_keypair_v2" "keypair" {
   public_key = file(var.public_key_file)
 }
 
-resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
-  name                  = "${var.cluster_template_name}"
+resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel" {
+  name                  = "${var.cluster_template_name}-flannel"
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
-  network_driver        = var.network_driver
+  network_driver        = "flannel"
   image                 = var.image_name
   flavor                = var.flavor_name
   master_flavor         = var.master_flavor_name
@@ -171,15 +166,70 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
   }
 }
 
-resource "openstack_containerinfra_cluster_v1" "cluster" {
-  name                 = "${var.cluster_name}"
-  cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template.id
+resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
+  name                 = "${var.cluster_name}-flannel"
+  cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube; openstack coe cluster config ${var.cluster_name} --dir ~/.kube --force"
+    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_name}-flannel --dir ~/.kube/flannel --force"
+  }
+
+  labels = {
+    # toggles
+    tiller_enabled                      = var.tiller_enabled
+    monitoring_enabled                  = var.monitoring_enabled
+    auto_scaling_enabled                = var.auto_scaling_enabled
+    master_lb_floating_ip_enabled       = var.master_fip_enabled
+    auto_healing_enabled                = var.auto_healing_enabled
+    # tags
+    kube_tag                            = var.kube_tag
+    etcd_tag                            = var.etcd_tag
+    tiller_tag                          = var.tiller_tag
+    autoscaler_tag                      = var.autoscaler_tag
+    cloud_provider_tag                  = var.cloud_provider_tag
+    heat_container_agent_tag            = var.hca_tag
+    # misc
+    auto_healing_controller             = var.auto_healing_controller
+    ingress_controller                  = var.ingress_controller
+    min_node_count                      = var.node_count
+    max_node_count                      = var.max_node_count
+    use_podman                          = var.use_podman
+  }
+}
+
+resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico" {
+  name                  = "${var.cluster_template_name}-calico"
+  coe                   = "kubernetes"
+  docker_storage_driver = "overlay2"
+  server_type           = "vm"
+  network_driver        = "calico"
+  image                 = var.image_name
+  flavor                = var.flavor_name
+  master_flavor         = var.master_flavor_name
+  volume_driver         = var.volume_driver
+  external_network_id   = var.external_network_id
+  fixed_network         = var.fixed_network_name
+  fixed_subnet          = var.fixed_subnet_id
+  master_lb_enabled     = var.master_fip_enabled
+  floating_ip_enabled   = var.fip_enabled
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
+  name                 = "${var.cluster_name}-calico"
+  cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_calico.id
+  master_count         = var.master_count
+  node_count           = var.node_count
+  keypair              = openstack_compute_keypair_v2.keypair.id
+
+  provisioner "local-exec" {
+    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_name}-calico --dir ~/.kube/calico --force"
   }
 
   labels = {
