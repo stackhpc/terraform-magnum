@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 DATE=${DATE:-20191126.0}
 IMAGE=${IMAGE:-Fedora-AtomicHost-29-$DATE}
 ARCH=${ARCH:-x86_64}

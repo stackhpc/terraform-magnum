@@ -35,17 +35,17 @@ variable "public_key_file" {
 
 variable "flavor_name" {
   type = string
-  default = "general.v1.tiny"
+  default = "ds4G"
 }
 
 variable "master_flavor_name" {
   type = string
-  default = "general.v1.tiny"
+  default = "ds2G"
 }
 
 variable "volume_driver" {
   type = string
-  default = ""
+  default = "cinder"
 }
 
 variable "network_driver" {
@@ -60,27 +60,39 @@ variable "master_count" {
 
 variable "node_count" {
   type = number
-  default = 2
+  default = 1
 }
 
 variable "max_node_count" {
   type = number
-  default = 4
+  default = 2
+}
+
+variable "autoscaler_tag" {
+  type = string
+  default = "v1.15.2"
 }
 
 variable "kube_tag" {
   type = string
-  default = "v1.16.3"
+  default = "v1.17.0"
+  # [coreos, podman]: https://github.com/kubernetes/kubernetes/releases
+  # [atomic]: https://hub.docker.com/r/openstackmagnum/kubernetes-apiserver/tags
 }
 
 variable "cloud_provider_tag" {
   type = string
-  default = "v1.16.0"
+  default = "v1.17.0"
+}
+
+variable "tiller_tag" {
+  type = string
+  default = "v2.16.1"
 }
 
 variable "etcd_tag" {
   type = string
-  default = ""
+  default = "3.3.17"
 }
 
 variable "use_podman" {
@@ -90,12 +102,37 @@ variable "use_podman" {
 
 variable "ingress_controller" {
   type = string
-  default = ""
+  default = "nginx"
+}
+
+variable "monitoring_enabled" {
+  type = string
+  default = "true"
+}
+
+variable "auto_scaling_enabled" {
+  type = string
+  default = "true"
+}
+
+variable "auto_healing_enabled" {
+  type = string
+  default = "true"
+}
+
+variable "auto_healing_controller" {
+  type = string
+  default = "magnum-auto-healer"
+}
+
+variable "tiller_enabled" {
+  type = string
+  default = "true"
 }
 
 variable "master_fip_enabled" {
   type = string
-  default = "false"
+  default = "true"
 }
 
 variable "fip_enabled" {
@@ -105,7 +142,7 @@ variable "fip_enabled" {
 
 variable "hca_tag" {
   type = string
-  default = "train-stable"
+  default = "ussuri-dev"
 }
 
 resource "openstack_compute_keypair_v2" "keypair" {
@@ -114,15 +151,15 @@ resource "openstack_compute_keypair_v2" "keypair" {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
-  name                  = var.cluster_template_name
-  image                 = var.image_name
+  name                  = "${var.cluster_template_name}"
   coe                   = "kubernetes"
+  docker_storage_driver = "overlay2"
+  server_type           = "vm"
+  network_driver        = var.network_driver
+  image                 = var.image_name
   flavor                = var.flavor_name
   master_flavor         = var.master_flavor_name
-  docker_storage_driver = "overlay2"
   volume_driver         = var.volume_driver
-  network_driver        = var.network_driver
-  server_type           = "vm"
   external_network_id   = var.external_network_id
   fixed_network         = var.fixed_network_name
   fixed_subnet          = var.fixed_subnet_id
@@ -135,34 +172,35 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template" {
 }
 
 resource "openstack_containerinfra_cluster_v1" "cluster" {
-  name                 = var.cluster_name
+  name                 = "${var.cluster_name}"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "openstack coe cluster config ${var.cluster_name} --dir ~/.kube/ --force"
+    command = "mkdir -p ~/.kube; openstack coe cluster config ${var.cluster_name} --dir ~/.kube --force"
   }
 
   labels = {
+    # toggles
+    tiller_enabled                      = var.tiller_enabled
+    monitoring_enabled                  = var.monitoring_enabled
+    auto_scaling_enabled                = var.auto_scaling_enabled
     master_lb_floating_ip_enabled       = var.master_fip_enabled
+    auto_healing_enabled                = var.auto_healing_enabled
+    # tags
+    kube_tag                            = var.kube_tag
+    etcd_tag                            = var.etcd_tag
+    tiller_tag                          = var.tiller_tag
+    autoscaler_tag                      = var.autoscaler_tag
+    cloud_provider_tag                  = var.cloud_provider_tag
+    heat_container_agent_tag            = var.hca_tag
+    # misc
+    auto_healing_controller             = var.auto_healing_controller
     ingress_controller                  = var.ingress_controller
-    nginx_ingress_controller_tag        = "0.26.1"
-    nginx_ingress_controller_chart_tag = "1.24.7"
-    tiller_enabled                      = "true"
-    tiller_tag                          = "v2.16.0"
-    monitoring_enabled                  = "true"
-    prometheus_operator_chart_tag       = "8.2.2"
-    auto_scaling_enabled                = "true"
-    autoscaler_tag                      = "v1.0"
     min_node_count                      = var.node_count
     max_node_count                      = var.max_node_count
     use_podman                          = var.use_podman
-    kube_tag                            = var.kube_tag
-    etcd_tag                            = var.etcd_tag
-    cloud_provider_tag                  = var.cloud_provider_tag
-    heat_container_agent_tag            = var.hca_tag
-    auto_healing_enabled                = "true"
   }
 }
