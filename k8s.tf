@@ -63,6 +63,16 @@ variable "max_node_count" {
   default = 2
 }
 
+variable "cluster_calico_count" {
+  type = number
+  default = 1
+}
+
+variable "cluster_flannel_count" {
+  type = number
+  default = 0
+}
+
 variable "autoscaler_tag" {
   type = string
   default = "v1.15.2"
@@ -167,6 +177,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
 }
 
 resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
+  count                = var.cluster_calico_count
   name                 = "${var.cluster_name}-flannel"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count         = var.master_count
@@ -222,6 +233,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico"
 }
 
 resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
+  count                = var.cluster_calico_count
   name                 = "${var.cluster_name}-calico"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_calico.id
   master_count         = var.master_count

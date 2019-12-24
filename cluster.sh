@@ -1,9 +1,7 @@
 #!/bin/bash
 set -x
 CLUSTER=${CLUSTER:-coreos}
+ACTION=${ACTION:-apply}
 pushd terraform/
-while true; do
-    terraform apply -var-file=$CLUSTER.tfvars -auto-approve || terraform destroy -var-file=$CLUSTER.tfvars -auto-approve
-    sleep 5
-done
+terraform $ACTION -var-file=$CLUSTER.tfvars -auto-approve
 popd
