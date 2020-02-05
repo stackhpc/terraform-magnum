@@ -1,5 +1,3 @@
 cluster_template_name = "k8s-coreos"
 cluster_name = "k8s-coreos"
-image_name = "fedora-coreos-31.20191217.2.0-openstack"
-kube_tag = "v1.17.0"
-cloud_provider_tag = "v1.17.0"
+image_name = "fedora-coreos-31.20191210.3.0-openstack"

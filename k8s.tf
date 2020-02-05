@@ -80,7 +80,7 @@ variable "autoscaler_tag" {
 
 variable "kube_tag" {
   type = string
-  default = "v1.17.0"
+  default = "v1.17.2"
   # [coreos, podman]: https://github.com/kubernetes/kubernetes/releases
   # [atomic]: https://hub.docker.com/r/openstackmagnum/kubernetes-apiserver/tags
 }
@@ -177,7 +177,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
 }
 
 resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
-  count                = var.cluster_calico_count
+  count                = var.cluster_flannel_count
   name                 = "${var.cluster_name}-flannel"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count         = var.master_count

@@ -1,5 +1,3 @@
 cluster_template_name = "k8s-podman"
 cluster_name = "k8s-podman"
-image_name = "Fedora-AtomicHost-29-20190820.0.x86_64"
-kube_tag = "v1.17.0"
-cloud_provider_tag = "v1.17.0"
+image_name = "Fedora-AtomicHost-29-20191126.0"

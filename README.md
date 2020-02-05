@@ -139,9 +139,9 @@ NOTE: magnum currently uses Helm 2, and tiller has been deprecated in Helm 3.
 
 # Ingress
 
-It is then necessary to label your node of choice as an ingress node, we are going to label the one that matches `minion-0`:
+It is then necessary to label your node of choice as an ingress node, we are going to label the one that is not a master node:
 
-    kubectl label `kubectl get nodes -o NAME | grep minion-0 | awk '{ print $1}'` role=ingress
+    kubectl label `kubectl get nodes -o NAME | grep -v master-0 | head -n1` role=ingress
 
 As an example, you can now proceed to map an Ingress to a service in the same Kubernetes namespace as follows:
     
