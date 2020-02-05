@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-DATE=${DATE:-31.20191210.3.0}
+DATE=${DATE:-31.20200118.3.0}
 STREAM=${STREAM:-stable}
 IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack}
 ARCH=${ARCH:-x86_64}
