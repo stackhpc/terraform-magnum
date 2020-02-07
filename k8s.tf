@@ -1,11 +1,21 @@
-variable "cluster_template_name" {
+variable "cluster_template_flannel_name" {
   type = string
-  default = "k8s"
+  default = "k8s_flannel"
 }
 
-variable "cluster_name" {
+variable "cluster_template_calico_name" {
   type = string
-  default = "k8s"
+  default = "k8s_calico"
+}
+
+variable "cluster_flannel_name" {
+  type = string
+  default = "k8s_flannel"
+}
+
+variable "cluster_calico_name" {
+  type = string
+  default = "k8s_calico"
 }
 
 variable "external_network_id" {
@@ -100,6 +110,11 @@ variable "etcd_tag" {
   default = "3.3.17"
 }
 
+variable "etcd_volume_size" {
+  type = number
+  default = 0
+}
+
 variable "use_podman" {
   type = string
   default = "true"
@@ -150,13 +165,18 @@ variable "hca_tag" {
   default = "ussuri-dev"
 }
 
+variable "kubelet_options" {
+  type = string
+  default = ""
+}
+
 resource "openstack_compute_keypair_v2" "keypair" {
   name       = "default"
   public_key = file(var.public_key_file)
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel" {
-  name                  = "${var.cluster_template_name}-flannel"
+  name                  = "${var.cluster_template_flannel_name}"
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
@@ -178,14 +198,14 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
 
 resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
   count                = var.cluster_flannel_count
-  name                 = "${var.cluster_name}-flannel"
+  name                 = "${var.cluster_flannel_name}"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_name}-flannel --dir ~/.kube/flannel --force"
+    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force"
   }
 
   labels = {
@@ -198,6 +218,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
     # tags
     kube_tag                            = var.kube_tag
     etcd_tag                            = var.etcd_tag
+    etcd_volume_size                    = var.etcd_volume_size
     tiller_tag                          = var.tiller_tag
     autoscaler_tag                      = var.autoscaler_tag
     cloud_provider_tag                  = var.cloud_provider_tag
@@ -208,11 +229,12 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
     min_node_count                      = var.node_count
     max_node_count                      = var.max_node_count
     use_podman                          = var.use_podman
+    kubelet_options			= var.kubelet_options
   }
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico" {
-  name                  = "${var.cluster_template_name}-calico"
+  name                  = "${var.cluster_template_calico_name}"
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
@@ -234,14 +256,14 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico"
 
 resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
   count                = var.cluster_calico_count
-  name                 = "${var.cluster_name}-calico"
+  name                 = "${var.cluster_calico_name}"
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_calico.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_name}-calico --dir ~/.kube/calico --force"
+    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico --force"
   }
 
   labels = {
@@ -254,6 +276,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
     # tags
     kube_tag                            = var.kube_tag
     etcd_tag                            = var.etcd_tag
+    etcd_volume_size                    = var.etcd_volume_size
     tiller_tag                          = var.tiller_tag
     autoscaler_tag                      = var.autoscaler_tag
     cloud_provider_tag                  = var.cloud_provider_tag
@@ -264,5 +287,6 @@ resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
     min_node_count                      = var.node_count
     max_node_count                      = var.max_node_count
     use_podman                          = var.use_podman
+    kubelet_options			= var.kubelet_options
   }
 }
