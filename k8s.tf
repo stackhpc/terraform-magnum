@@ -43,6 +43,11 @@ variable "public_key_file" {
   default = "~/.ssh/id_rsa.pub"
 }
 
+variable "keypair_name" {
+  type = string
+  default = "default"
+}
+
 variable "flavor_name" {
   type = string
   default = "ds4G"
@@ -171,7 +176,7 @@ variable "kubelet_options" {
 }
 
 resource "openstack_compute_keypair_v2" "keypair" {
-  name       = "default"
+  name       = var.keypair_name
   public_key = file(var.public_key_file)
 }
 
