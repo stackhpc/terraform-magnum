@@ -1,0 +1,19 @@
+cluster_template_calico_name = "k8s-radarad"
+cluster_calico_name = "k8s-radarad"
+master_count = 3
+node_count = 5
+max_node_count = 10
+flavor_name = "m1.xlarge"
+master_flavor_name = "m1.medium"
+image_name = "Fedora-AtomicHost-29-20191126.0"
+fixed_network_name = "radarad-vxlan"
+fixed_subnet_id = "3796a86e-b8cb-4da5-a004-d1613533d79e"
+external_network_id = "275ec9cd-a51e-4747-a2c4-23bb72d1cc06"
+public_key_file = "~/.ssh/id_rsa.pub"
+master_fip_enabled = "true"
+fip_enabled = "false"
+volume_driver = "cinder"
+kube_tag = "v1.17.2" # https://hub.docker.com/r/openstackmagnum/kubernetes-apiserver/tags 
+cloud_provider_tag = "v1.17.0"
+etcd_volume_size = 10
+kubelet_options = "--eviction-hard=memory.available<1.5G --system-reserved=memory=1Gi --housekeeping-interval=10s --eviction-soft=memory.available<2G --eviction-soft-grace-period=memory.available=30s --eviction-max-pod-grace-period=10"
