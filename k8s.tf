@@ -1,21 +1,21 @@
 variable "cluster_template_flannel_name" {
   type = string
-  default = "k8s_flannel"
+  default = "k8s-flannel"
 }
 
 variable "cluster_template_calico_name" {
   type = string
-  default = "k8s_calico"
+  default = "k8s-calico"
 }
 
 variable "cluster_flannel_name" {
   type = string
-  default = "k8s_flannel"
+  default = "k8s-flannel"
 }
 
 variable "cluster_calico_name" {
   type = string
-  default = "k8s_calico"
+  default = "k8s-calico"
 }
 
 variable "external_network_id" {
@@ -181,7 +181,7 @@ resource "openstack_compute_keypair_v2" "keypair" {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel" {
-  name                  = "${var.cluster_template_flannel_name}"
+  name                  = var.cluster_template_flannel_name
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
@@ -203,14 +203,14 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
 
 resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
   count                = var.cluster_flannel_count
-  name                 = "${var.cluster_flannel_name}"
+  name                 = var.cluster_flannel_name
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force"
+    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force; ln -s ~/.kube/flannel/config ~/.kube/config -f"
   }
 
   labels = {
@@ -239,7 +239,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico" {
-  name                  = "${var.cluster_template_calico_name}"
+  name                  = var.cluster_template_calico_name
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
@@ -261,14 +261,14 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_calico"
 
 resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
   count                = var.cluster_calico_count
-  name                 = "${var.cluster_calico_name}"
+  name                 = var.cluster_calico_name
   cluster_template_id  = openstack_containerinfra_clustertemplate_v1.cluster_template_calico.id
   master_count         = var.master_count
   node_count           = var.node_count
   keypair              = openstack_compute_keypair_v2.keypair.id
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico --force"
+    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico --force; ln -s ~/.kube/calico/config ~/.kube/config -f"
   }
 
   labels = {
