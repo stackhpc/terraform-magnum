@@ -35,7 +35,7 @@ variable "fixed_subnet_id" {
 
 variable "image_name" {
   type = string
-  default = "FedoraAtomic29-20190820"
+  default = "Fedora-AtomicHost-29-20191126.0"
 }
 
 variable "public_key_file" {

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
-CLUSTER=${CLUSTER:-coreos}
-ACTION=${ACTION:-apply}
-pushd terraform/
+CLUSTER=${1:-coreos}
+ACTION=${2:-apply}
+pushd `dirname $0`
 terraform $ACTION -var-file=$CLUSTER.tfvars -auto-approve
 popd
