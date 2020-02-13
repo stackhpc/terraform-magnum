@@ -1,1 +1,4 @@
 external_network_id = "1c7dcea7-f4f0-48a0-ac2d-19a547c01603"
+keypair_name = "default"
+cluster_calico_enabled = 1
+cluster_flannel_enabled = 1

@@ -1,10 +1,10 @@
 #!/bin/bash
 set -x
-DATE=${DATE:-31.20200118.3.0}
+DATE=${DATE:-31.20200127.3.0}
 STREAM=${STREAM:-stable}
-IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack}
 ARCH=${ARCH:-x86_64}
-FNAME=$IMAGE.$ARCH.qcow2
+IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack.$ARCH}
+FNAME=$IMAGE.qcow2
 if [ ! -f $FNAME ]; then
     curl -OL https://builds.coreos.fedoraproject.org/prod/streams/$STREAM/builds/$DATE/$ARCH/$FNAME.xz
     unxz $FNAME.xz
