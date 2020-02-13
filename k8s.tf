@@ -112,7 +112,7 @@ variable "tiller_tag" {
 
 variable "etcd_tag" {
   type = string
-  default = "3.3.17"
+  default = "3.4.3"
 }
 
 variable "etcd_volume_size" {
