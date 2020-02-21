@@ -45,18 +45,18 @@ variable "node_count" {
   type = number
   default = 1
 }
-variable "fip_enabled" {
+
+variable "floating_ip_enabled" {
+  type = string
+  default = "true"
+}
+
+variable "master_lb_enabled" {
   type = string
   default = "true"
 }
 
 variable "template_labels" {
-  type = map
-  default = {
-  }
-}
-
-variable "labels" {
   type = map
   default = {
     kube_tag                            = "v1.15.7" # https://hub.docker.com/r/openstackmagnum/kubernetes-apiserver/tags
@@ -74,12 +74,12 @@ variable "labels" {
   }
 }
 
-variable "label_overrides" {
+variable "labels" {
   type = map
   default = {
   }
 }
 
 locals {
-  labels = merge(var.labels, var.label_overrides)
+  labels = merge(var.template_labels, var.labels)
 }

@@ -30,9 +30,9 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
   external_network_id   = var.external_network_id
   fixed_network         = var.fixed_network_name
   fixed_subnet          = var.fixed_subnet_id
-  floating_ip_enabled   = var.fip_enabled
+  floating_ip_enabled   = var.floaing_ip_enabled
+  master_lb_enabled     = var.master_lb_enabled
   labels                = var.template_labels
-  master_lb_enabled     = local.labels.master_lb_floating_ip_enabled
 
   lifecycle {
     create_before_destroy = true
@@ -47,7 +47,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
   master_count          = var.master_count
   node_count            = var.node_count
   keypair               = var.keypair_name
-  labels                = local.labels
+  labels                = var.labels
 
   provisioner "local-exec" {
     command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force; ln -s ~/.kube/flannel/config ~/.kube/config -f"
