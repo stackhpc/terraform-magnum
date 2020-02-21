@@ -30,7 +30,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel
   external_network_id   = var.external_network_id
   fixed_network         = var.fixed_network_name
   fixed_subnet          = var.fixed_subnet_id
-  floating_ip_enabled   = var.floaing_ip_enabled
+  floating_ip_enabled   = var.floating_ip_enabled
   master_lb_enabled     = var.master_lb_enabled
   labels                = var.template_labels
 
