@@ -130,7 +130,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_templates" {
 resource "openstack_containerinfra_cluster_v1" "clusters" {
   for_each              = var.clusters
   name                  = each.key
-  cluster_template_id   = each.value
+  cluster_template_id   = openstack_containerinfra_clustertemplate_v1.cluster_templates[each.value].id
   master_count          = var.master_count
   node_count            = var.node_count
   keypair               = var.keypair_name
@@ -140,7 +140,6 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
     command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -s ~/.kube/${each.key}/config ~/.kube/config -f"
   }
 
-  depends_on = [openstack_containerinfra_clustertemplate_v1.cluster_templates]
 }
 
 output "templates" {
