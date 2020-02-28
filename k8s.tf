@@ -139,6 +139,8 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   provisioner "local-exec" {
     command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -s ~/.kube/${each.key}/config ~/.kube/config -f"
   }
+
+  depends_on = [openstack_containerinfra_clustertemplate_v1.cluster_templates]
 }
 
 output "templates" {
