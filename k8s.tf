@@ -9,7 +9,7 @@ variable "images" {
   type = map
   default = {
     "fedora-atomic" = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    "fedora-coreos" = "fedora-coreos-31.20200127.3.0-openstack.x86_64"
+    "fedora-coreos" = "fedora-coreos-31.20200210.3.0-openstack.x86_64"
   }
 }
 variable "network_drivers" {
@@ -137,7 +137,7 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   labels                = local.labels
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -s ~/.kube/${each.key}/config ~/.kube/config -f"
+    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -s ~/.kube/${each.key}/config ~/.kube/config -f"
   }
 
 }

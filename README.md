@@ -1,21 +1,46 @@
-# Autoscaling in OpenStack Magnum deployed Kubernetes
+# OpenStack Magnum and Terraform to deploy Kubernetes cluster
+
+## Autoscaling
 
 Prerequisites:
+
 - OpenStack Queens, Magnum Stein 8.1.0 minimum
 - Terraform v0.12.10, provider.openstack v1.23.0
+- Kubernetes client (to be able to run `kubectl`)
 
-To deploy:
-- `cp terraform.tfvars{.sample,}`
-- Edit `terraform.tfvars` and fit your OpenStack environment.
-- Source your openstack environment variables, e.g. `source openrc.sh`
-- `terraform init && terraform apply`
+Deployment:
+
+- Copy sample variable file:
+
+    cp terraform.tfvars{.sample,}
+
+- Edit `terraform.tfvars` and fill in details like `external_network_id` and `keypair_name`.
+
+- Source your OpenStack cloud environment variables:
+
+    source openrc.sh
+
+- To upload the latest Fedora CoreOS image:
+
+    ./upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
+    ./upload-atomic.sh # if using older Magnum releases
+
+- To deploy the cluster (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
+
+    ./cluster.sh coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
+    ./cluster.sh podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
+    ./cluster.sh atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
+
 - Optionally attach floating ip to the master node:
 
     openstack server add floating ip \`openstack server list -f value -c Name | grep master-0\` 128.232.224.88
 
-- SSH into the master node and `kubectl apply -f test-autoscale.yaml`
+- SSH into the master node:
 
-Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
+    kubectl create deployment test-autoscale --image=nginx
+    kubectl scale deployment test-autoscale --replicas=100
+
+- Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
 
     I1017 13:26:11.617165       1 leaderelection.go:217] attempting to acquire leader lease  kube-system/cluster-autoscaler...
     I1017 13:26:11.626499       1 leaderelection.go:227] successfully acquired lease kube-system/cluster-autoscaler
@@ -40,7 +65,7 @@ Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
     I1017 14:01:25.030818       1 magnum_manager_heat.go:280] Waited for stack UPDATE_COMPLETE status
     I1017 14:01:58.970490       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
 
-# Cinder Volume
+## Cinder Volumes
 
 In order to ensure support for cinder volumes, ensure that `volume_driver = "cinder"` in `terraform.tfvars`.
 
@@ -68,9 +93,8 @@ To attach cinder volumes:
             fsType: ext4
     END
 
-To use Cinder as the default storage class:
+To use Cinder as the default storage class `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/cinder-sc.yaml`:
 
-    cat <<END | kubectl apply -f -
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
@@ -80,9 +104,8 @@ To use Cinder as the default storage class:
     provisioner: kubernetes.io/cinder
     END
 
-You can then proceed to spawn a PVC as before as follows:
+You can then proceed to spawn a PVC `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/nginx-cinder-pvc.yaml`:
 
-    cat <<END | kubectl apply -f -
     kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -114,13 +137,12 @@ You can then proceed to spawn a PVC as before as follows:
         - name: mypd
           persistentVolumeClaim:
             claimName: nginx
-    END
 
-Cluster proportional autoscaler fix for Magnum pre-Stein 8.2.0
+Cluster proportional autoscaler fix for Magnum versions prior to Stein 8.2.0
 
     kubectl set image deploy/kube-dns-autoscaler autoscaler=gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.1.2 -n kube-system
 
-# Helm
+## Helm
 
 To use helm with tiller installed on the cluster, first of all, install `helm`:
 
@@ -137,7 +159,7 @@ If there is a mismatch between the intalled version of helm client and tiller in
 
 NOTE: magnum currently uses Helm 2, and tiller has been deprecated in Helm 3.
 
-# Ingress
+## Ingress
 
 It is then necessary to label your node of choice as an ingress node, we are going to label the one that is not a master node:
 
