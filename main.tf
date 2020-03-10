@@ -105,22 +105,25 @@ variable "label_overrides" {
 
 locals {
   labels = merge(var.labels, var.label_overrides)
-  templates = {
+  all_templates = {
     for i, value in setproduct(var.network_drivers, keys(var.images)) : format("k8s-%s-%s", value.1, value.0) => {
 	network_driver = value.0
 	image          = var.images[value.1]
     }
   }
+  templates = {
+    for k in setintersection(values(var.clusters), keys(local.all_templates)) : k => local.all_templates[k]
+  }
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_templates" {
-  for_each              = setintersection(values(var.clusters), keys(local.templates))
-  name                  = each.value
+  for_each              = local.templates
+  name                  = each.key
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
-  network_driver        = local.templates[each.value].network_driver
-  image                 = local.templates[each.value].image
+  network_driver        = each.value.network_driver
+  image                 = each.value.image
   flavor                = var.flavor_name
   master_flavor         = var.master_flavor_name
   volume_driver         = var.volume_driver
