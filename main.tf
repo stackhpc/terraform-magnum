@@ -1,5 +1,4 @@
 provider "openstack" {
-  version = "1.23.0"
 }
 
 variable "clusters" {

@@ -10,6 +10,10 @@ Prerequisites:
 
 Deployment:
 
+- Initialise terraform
+
+    terraform init --upgrade
+
 - Copy sample variable file:
 
     cp terraform.tfvars{.sample,}
