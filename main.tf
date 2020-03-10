@@ -1,3 +1,7 @@
+provider "openstack" {
+  version = "1.23.0"
+}
+
 variable "clusters" {
   type = map
   default = {
@@ -61,6 +65,11 @@ variable "node_count" {
   default = 1
 }
 
+variable "create_timeout" {
+  type = number
+  default = 20
+}
+
 variable "floating_ip_enabled" {
   type = string
   default = "true"
@@ -106,13 +115,13 @@ locals {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_templates" {
-  for_each              = local.templates
-  name                  = each.key
+  for_each              = setintersection(values(var.clusters), keys(local.templates))
+  name                  = each.value
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
-  network_driver        = each.value.network_driver
-  image                 = each.value.image
+  network_driver        = local.templates[each.value].network_driver
+  image                 = local.templates[each.value].image
   flavor                = var.flavor_name
   master_flavor         = var.master_flavor_name
   volume_driver         = var.volume_driver
@@ -134,6 +143,7 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   master_count          = var.master_count
   node_count            = var.node_count
   keypair               = var.keypair_name
+  create_timeout        = var.create_timeout
   labels                = local.labels
 
   provisioner "local-exec" {
