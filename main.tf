@@ -146,7 +146,7 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   labels                = local.labels
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -s ~/.kube/${each.key}/config ~/.kube/config -f"
+    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -fs ~/.kube/${each.key}/config ~/.kube/config"
   }
 
 }
