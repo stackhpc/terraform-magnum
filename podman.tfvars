@@ -1,5 +1,12 @@
 clusters = {
-  "k8s-podman-calico" = "k8s-fedora-atomic-calico"
+  "k8s-calico-podman" = {
+    network_driver = "calico"
+    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+  }
+  "k8s-flannel-podman" = {
+    network_driver = "flannel"
+    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+  }
 }
 
 label_overrides = {

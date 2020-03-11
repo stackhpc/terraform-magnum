@@ -1,5 +1,12 @@
 clusters = {
-  "k8s-coreos-calico" = "k8s-fedora-coreos-calico"
+  "k8s-calico-coreos" = {
+     network_driver = "calico"
+     image          = "fedora-coreos-31.20200210.3.0-openstack.x86_64"
+  }
+  "k8s-flannel-coreos" = {
+     network_driver = "flannel"
+     image          = "fedora-coreos-31.20200210.3.0-openstack.x86_64"
+  }
 }
 
 label_overrides = {

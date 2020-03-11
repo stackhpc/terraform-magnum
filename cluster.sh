@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-TFVARS=${1:-coreos.tfvars}
+TFVARS=${1:-atomic.tfvars}
 TFSTATE=${2:-terraform.tfstate}
 ACTION=${3:-apply -auto-approve}
 pushd `dirname $0`

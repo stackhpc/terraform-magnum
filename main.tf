@@ -4,22 +4,21 @@ provider "openstack" {
 variable "clusters" {
   type = map
   default = {
-    "k8s-atomic-calico" = "k8s-fedora-atomic-calico"
+    "k8s-calico-atomic" = {
+      network_driver = "calico"
+      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    }
+    "k8s-flannel-atomic" = {
+      network_driver = "flannel"
+      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    }
   }
 }
 
-variable "images" {
-  type = map
-  default = {
-    "fedora-atomic" = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    "fedora-coreos" = "fedora-coreos-31.20200210.3.0-openstack.x86_64"
-  }
-}
 variable "network_drivers" {
     type = list
     default = ["flannel", "calico"]
 }
-
 
 variable "external_network_id" {
   type = string
@@ -105,18 +104,15 @@ variable "label_overrides" {
 
 locals {
   labels = merge(var.labels, var.label_overrides)
-  all_templates = {
-    for i, value in setproduct(var.network_drivers, keys(var.images)) : format("k8s-%s-%s", value.1, value.0) => {
-	network_driver = value.0
-	image          = var.images[value.1]
-    }
-  }
   templates = {
-    for k in setintersection(values(var.clusters), keys(local.all_templates)) : k => local.all_templates[k]
+    for item in distinct(values(var.clusters)) : format("k8s-%s-%s", item.network_driver, item.image) => item
+  }
+  clusters = {
+    for name, item in var.clusters : name => openstack_containerinfra_clustertemplate_v1.templates[format("k8s-%s-%s", item.network_driver, item.image)].id
   }
 }
 
-resource "openstack_containerinfra_clustertemplate_v1" "cluster_templates" {
+resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   for_each              = local.templates
   name                  = each.key
   coe                   = "kubernetes"
@@ -139,9 +135,9 @@ resource "openstack_containerinfra_clustertemplate_v1" "cluster_templates" {
 }
 
 resource "openstack_containerinfra_cluster_v1" "clusters" {
-  for_each              = var.clusters
+  for_each              = local.clusters
   name                  = each.key
-  cluster_template_id   = openstack_containerinfra_clustertemplate_v1.cluster_templates[each.value].id
+  cluster_template_id   = each.value
   master_count          = var.master_count
   node_count            = var.node_count
   keypair               = var.keypair_name
@@ -159,6 +155,5 @@ output "templates" {
 }
 
 output "clusters" {
-  value = var.clusters
+  value = local.clusters
 }
-
