@@ -70,7 +70,7 @@ variable "create_timeout" {
 
 variable "floating_ip_enabled" {
   type = string
-  default = "true"
+  default = "false"
 }
 
 variable "master_lb_enabled" {
@@ -91,8 +91,9 @@ variable "labels" {
     autoscaler_tag                      = "v1.15.2"
     auto_healing_enabled                = "true"
     auto_healing_controller             = "magnum-auto-healer"
-    ingress_controller                  = "nginx"
+    ingress_controller                  = "octavia"
     master_lb_floating_ip_enabled       = "true"
+    cinder_csi_enabled                  = "true"
   }
 }
 

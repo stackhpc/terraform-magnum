@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
-TFVARS=${1:-atomic.tfvars}
-TFSTATE=${2:-terraform.tfstate}
+TFVARS=`basename ${1:-atomic.tfvars}`
+TFSTATE=`basename ${2:-terraform.tfstate}`
 ACTION=${3:-apply -auto-approve}
 pushd `dirname $0`
 terraform $ACTION -var-file=$TFVARS -state=$TFSTATE

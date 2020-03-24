@@ -11,7 +11,7 @@ clusters = {
 
 label_overrides = {
   use_podman                            = "true"
-  kube_tag                              = "v1.17.3" # https://github.com/kubernetes/kubernetes/releases
+  kube_tag                              = "v1.17.4" # https://github.com/kubernetes/kubernetes/releases
   cloud_provider_tag                    = "v1.17.0"
   etcd_tag                              = "3.4.3"
 }
