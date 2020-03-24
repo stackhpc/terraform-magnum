@@ -1,0 +1,32 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-cinder-csi
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi # pass here the size of the volume
+  storageClassName: cinder-csi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-cinder-csi
+spec:
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+          hostPort: 8081
+          protocol: TCP
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: mypd
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: nginx-cinder-csi

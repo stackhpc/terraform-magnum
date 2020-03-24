@@ -97,7 +97,7 @@ To attach cinder volumes:
             fsType: ext4
     END
 
-To use Cinder as the default storage class `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/cinder-sc.yaml`:
+To use Cinder as the default storage class `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/sc-in-tree-cinder.yaml`:
 
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
@@ -108,7 +108,7 @@ To use Cinder as the default storage class `kubectl apply -f https://raw.githubu
     provisioner: kubernetes.io/cinder
     END
 
-You can then proceed to spawn a PVC `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/nginx-cinder-pvc.yaml`:
+You can then proceed to spawn a PVC `kubectl apply -f https://raw.githubusercontent.com/stackhpc/magnum-terraform/master/manifests/nginx-in-tree-cinder.yaml`:
 
     kind: PersistentVolumeClaim
     apiVersion: v1

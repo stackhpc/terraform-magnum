@@ -1,18 +1,19 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: nginx
+  name: nginx-in-tree-cinder
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi # pass here the size of the volume
+  storageClassName: in-tree-cinder
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: web
+  name: nginx-in-tree-cinder
 spec:
   containers:
     - name: web
@@ -28,4 +29,4 @@ spec:
   volumes:
     - name: mypd
       persistentVolumeClaim:
-        claimName: nginx
+        claimName: nginx-in-tree-cinder
