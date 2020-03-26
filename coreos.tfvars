@@ -12,5 +12,5 @@ clusters = {
 label_overrides = {
   kube_tag           = "v1.17.4" # https://github.com/kubernetes/kubernetes/releases
   cloud_provider_tag = "v1.17.0"
-  etcd_tag           = "3.4.3"
+  etcd_tag           = "3.4.4"
 }
