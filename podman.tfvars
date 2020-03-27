@@ -9,9 +9,11 @@ clusters = {
   }
 }
 
+kubeconfig = "k8s-calico-coreos"
+
 label_overrides = {
   use_podman         = "true"
   kube_tag           = "v1.17.4" # https://github.com/kubernetes/kubernetes/releases
-  cloud_provider_tag = "v1.17.0"
+  cloud_provider_tag = "v1.17.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
   etcd_tag           = "3.4.4"
 }

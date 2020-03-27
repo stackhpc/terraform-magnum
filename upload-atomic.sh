@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -ex
 DATE=${DATE:-20191126.0}
 ARCH=${ARCH:-x86_64}
 IMAGE=${IMAGE:-Fedora-AtomicHost-29-$DATE.$ARCH}

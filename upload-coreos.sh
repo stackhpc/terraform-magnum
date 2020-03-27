@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -ex
 DATE=${DATE:-`curl https://builds.coreos.fedoraproject.org/streams/stable.json | jq -r '.architectures.x86_64.artifacts.openstack.release'`}
 STREAM=${STREAM:-stable}
 ARCH=${ARCH:-x86_64}

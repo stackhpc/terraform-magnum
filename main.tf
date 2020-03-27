@@ -4,20 +4,11 @@ provider "openstack" {
 variable "clusters" {
   type = map
   default = {
-    "k8s-calico-atomic" = {
-      network_driver = "calico"
-      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    }
-    "k8s-flannel-atomic" = {
-      network_driver = "flannel"
-      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    }
   }
 }
 
-variable "network_drivers" {
-  type    = list
-  default = ["flannel", "calico"]
+variable "kubeconfig" {
+  type = string
 }
 
 variable "external_network_id" {
@@ -45,7 +36,7 @@ variable "flavor_name" {
 
 variable "master_flavor_name" {
   type    = string
-  default = "ds2G"
+  default = "ds4G"
 }
 
 variable "volume_driver" {
@@ -81,8 +72,6 @@ variable "master_lb_enabled" {
 variable "labels" {
   type = map
   default = {
-    kube_tag                      = "v1.15.7" # https://hub.docker.com/r/openstackmagnum/kubernetes-apiserver/tags
-    cloud_provider_tag            = "v1.15.0"
     heat_container_agent_tag      = "ussuri-dev"
     tiller_enabled                = "true"
     tiller_tag                    = "v2.16.3"
@@ -146,9 +135,21 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   labels              = local.labels
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force; ln -fs ~/.kube/${each.key}/config ~/.kube/config"
+    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force"
   }
 
+}
+
+resource "null_resource" "kubeconfig" {
+  triggers = {
+    kubeconfig = var.kubeconfig
+  }
+
+  provisioner "local-exec" {
+    command = "ln -fs ~/.kube/${var.kubeconfig}/config ~/.kube/config"
+  }
+
+  depends_on = [openstack_containerinfra_cluster_v1.clusters]
 }
 
 output "templates" {
