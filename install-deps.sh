@@ -1,4 +1,15 @@
-sudo apt install jq
+case `lsb_release -si` in
+	Ubuntu)
+		PM=apt
+		;;
+	CentOS)
+		PM=dnf
+		;;
+	*)
+		exit 1
+		;;
+esac
+sudo $PM install jq unzip -y
 
 # Install latest kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
