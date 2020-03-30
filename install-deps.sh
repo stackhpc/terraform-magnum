@@ -1,3 +1,4 @@
+set -ex
 case `lsb_release -si` in
 	Ubuntu)
 		PM=apt
@@ -24,7 +25,7 @@ VERSION=0.12.24 && \
 	sudo mv terraform /usr/local/bin/terraform
 
 # Install latest known sonobuoy
-VERSION=0.17.4 && \
+VERSION=0.17.2 && \
 	curl -L "https://github.com/vmware-tanzu/sonobuoy/releases/download/v${VERSION}/sonobuoy_${VERSION}_linux_amd64.tar.gz" --output sonobuoy.tar.gz && \
 	mkdir -p tmp && \
 	tar -xzf sonobuoy.tar.gz -C tmp/ && \
