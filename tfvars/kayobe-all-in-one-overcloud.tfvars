@@ -1,5 +1,5 @@
 external_network_id = "provision-net"
-keypair_name        = "default"
+keypair_name        = "mykey"
 master_flavor_name  = "m1.small"
 flavor_name         = "m1.medium"
 volume_driver       = ""

@@ -1,9 +1,11 @@
 #!/bin/bash
-set -ex
+set -x
 DATE=${DATE:-20191126.0}
 ARCH=${ARCH:-x86_64}
 IMAGE=${IMAGE:-Fedora-AtomicHost-29-$DATE.$ARCH}
 FNAME=$IMAGE.qcow2
+set +x
+set -e
 if [ ! -f $FNAME ]; then
     curl -OL https://dl.fedoraproject.org/pub/alt/atomic/stable/Fedora-29-updates-$DATE/AtomicHost/$ARCH/images/$FNAME
 fi
