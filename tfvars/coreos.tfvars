@@ -12,6 +12,6 @@ clusters = {
 kubeconfig = "k8s-calico-coreos"
 
 label_overrides = {
-  kube_tag           = "v1.17.4" # https://github.com/kubernetes/kubernetes/releases
-  cloud_provider_tag = "v1.17.0"
+  kube_tag           = "v1.18.1" # https://github.com/kubernetes/kubernetes/releases
+  cloud_provider_tag = "v1.18.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
 }

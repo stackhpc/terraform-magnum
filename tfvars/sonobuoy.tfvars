@@ -1,19 +1,18 @@
 clusters = {
-  "k8s-calico-podman" = {
+  "k8s-calico-coreos" = {
     network_driver = "calico"
-    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    image          = "fedora-coreos-31.20200310.3.0-openstack.x86_64"
   }
-  "k8s-flannel-podman" = {
+  "k8s-flannel-coreos" = {
     network_driver = "flannel"
-    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    image          = "fedora-coreos-31.20200310.3.0-openstack.x86_64"
   }
 }
 
-kubeconfig = "k8s-calico-podman"
+node_count = 2
+kubeconfig = "k8s-calico-coreos"
 
 label_overrides = {
-  use_podman         = "true"
   kube_tag           = "v1.18.1" # https://github.com/kubernetes/kubernetes/releases
   cloud_provider_tag = "v1.18.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
-  etcd_tag           = "v3.4.6"
 }
