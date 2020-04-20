@@ -71,10 +71,8 @@ variable "labels" {
   default = {
     heat_container_agent_tag      = "ussuri-dev"
     tiller_enabled                = "true"
-    tiller_tag                    = "v2.16.3"
     monitoring_enabled            = "true"
     auto_scaling_enabled          = "true"
-    autoscaler_tag                = "v1.15.2"
     auto_healing_enabled          = "true"
     auto_healing_controller       = "magnum-auto-healer"
     ingress_controller            = "octavia"
