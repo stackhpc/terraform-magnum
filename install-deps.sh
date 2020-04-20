@@ -17,6 +17,21 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 	chmod +x kubectl && \
 	sudo mv kubectl /usr/local/bin/kubectl
 
+# Install helm2 and helm (version 3)
+VERSION=v2.16.4 && \
+	curl -L https://get.helm.sh/helm-$VERSION-linux-amd64.tar.gz --output helm.tar.gz && \
+	mkdir -p tmp && \
+	tar -xzf helm.tar.gz -C tmp/ && \
+	sudo mv tmp/linux-amd64/helm /usr/local/bin/helm2 && \
+	rm -rf helm.tar.gz tmp
+
+VERSION=v3.1.2 && \
+	curl -L https://get.helm.sh/helm-$VERSION-linux-amd64.tar.gz --output helm.tar.gz && \
+	mkdir -p tmp && \
+	tar -xzf helm.tar.gz -C tmp/ && \
+	sudo mv tmp/linux-amd64/helm /usr/local/bin/helm && \
+	rm -rf helm.tar.gz tmp
+
 # Install known latest terraform
 VERSION=0.12.24 && \
 	curl -L https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip --output terraform.zip && \

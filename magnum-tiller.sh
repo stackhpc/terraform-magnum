@@ -5,4 +5,4 @@ export TILLER_NAMESPACE="magnum-tiller"
 kubectl -n magnum-tiller get secret helm-client-secret -o jsonpath='{.data.ca\.pem}' | base64 --decode > "${HELM_HOME}/ca.pem"
 kubectl -n magnum-tiller get secret helm-client-secret -o jsonpath='{.data.key\.pem}' | base64 --decode > "${HELM_HOME}/key.pem"
 kubectl -n magnum-tiller get secret helm-client-secret -o jsonpath='{.data.cert\.pem}' | base64 --decode > "${HELM_HOME}/cert.pem"
-helm init --upgrade
+helm2 init --upgrade
