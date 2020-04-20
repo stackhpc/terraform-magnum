@@ -1,11 +1,10 @@
 #!/bin/bash
 set -x
-DATE=${DATE:-31.20200310.3.0}
+DATE=${DATE:-31.20200323.3.2}
 STREAM=${STREAM:-stable}
 ARCH=${ARCH:-x86_64}
 IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack.$ARCH}
 FNAME=$IMAGE.qcow2
-set +x
 LATEST=`curl https://builds.coreos.fedoraproject.org/streams/stable.json | jq -r '.architectures.x86_64.artifacts.openstack.release'`
 echo
 if [[ $DATE != $LATEST ]]; then
