@@ -71,7 +71,6 @@ variable "labels" {
   default = {
     heat_container_agent_tag      = "ussuri-dev"
     tiller_enabled                = "true"
-    helm_client_tag               = "v2.16.6"
     monitoring_enabled            = "true"
     auto_scaling_enabled          = "true"
     auto_healing_enabled          = "true"
