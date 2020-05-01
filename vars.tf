@@ -41,6 +41,11 @@ variable "volume_driver" {
   default = "cinder"
 }
 
+variable "docker_volume_size" {
+  type    = number
+  default = "0"
+}
+
 variable "master_count" {
   type    = number
   default = 1
@@ -83,6 +88,12 @@ variable "labels" {
 
 variable "label_overrides" {
   type = map
+  default = {
+  }
+}
+
+variable "cluster_label_overrides" {
+  type = map(map(string))
   default = {
   }
 }

@@ -2,12 +2,14 @@ provider "openstack" {
 }
 
 locals {
-  labels = merge(var.labels, var.label_overrides)
   templates = {
     for item in distinct(values(var.clusters)) : format("k8s-%s-%s", item.network_driver, item.image) => item
   }
   clusters = {
-    for name, item in var.clusters : name => openstack_containerinfra_clustertemplate_v1.templates[format("k8s-%s-%s", item.network_driver, item.image)].id
+    for name, item in var.clusters : name => {
+      template_id = openstack_containerinfra_clustertemplate_v1.templates[format("k8s-%s-%s", item.network_driver, item.image)].id
+      labels      = merge(var.labels, var.label_overrides, lookup(var.cluster_label_overrides, name, {}))
+    }
   }
 }
 
@@ -36,12 +38,13 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
 resource "openstack_containerinfra_cluster_v1" "clusters" {
   for_each            = local.clusters
   name                = each.key
-  cluster_template_id = each.value
+  cluster_template_id = each.value.template_id
   master_count        = var.master_count
   node_count          = var.node_count
   keypair             = var.keypair_name
   create_timeout      = var.create_timeout
-  labels              = local.labels
+  labels              = each.value.labels
+  docker_volume_size  = var.docker_volume_size
 
   provisioner "local-exec" {
     command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force"
