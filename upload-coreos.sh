@@ -1,18 +1,11 @@
 #!/bin/bash
-set -x
-DATE=${DATE:-31.20200323.3.2}
+set -ex
+DATE=${DATE:-`curl https://builds.coreos.fedoraproject.org/streams/stable.json | jq -r '.architectures.x86_64.artifacts.openstack.release'`}
 STREAM=${STREAM:-stable}
 ARCH=${ARCH:-x86_64}
 IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack.$ARCH}
 FNAME=$IMAGE.qcow2
-LATEST=`curl https://builds.coreos.fedoraproject.org/streams/stable.json | jq -r '.architectures.x86_64.artifacts.openstack.release'`
-echo
-if [[ $DATE != $LATEST ]]; then
-	echo "$IMAGE may be an out of date release. DATE=$LATEST is the latest."
-else
-	echo "$IMAGE is the latest stable release."
-fi
-set -e
+sed -i "s/fedora-coreos-.*-openstack.$ARCH/$IMAGE/g" *.tfvars
 if [ ! -f $FNAME ]; then
     curl -OL https://builds.coreos.fedoraproject.org/prod/streams/$STREAM/builds/$DATE/$ARCH/$FNAME.xz
     unxz $FNAME.xz
