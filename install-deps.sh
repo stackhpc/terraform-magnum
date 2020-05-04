@@ -1,9 +1,10 @@
 set -ex
-case `lsb_release -si` in
-	Ubuntu)
+source /etc/os-release
+case $ID in
+	ubuntu)
 		PM=apt
 		;;
-	CentOS)
+	centos)
 		PM=dnf
 		;;
 	*)
