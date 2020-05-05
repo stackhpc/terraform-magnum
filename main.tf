@@ -1,4 +1,5 @@
 provider "openstack" {
+  version = "v1.27.0"
 }
 
 locals {
