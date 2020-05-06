@@ -1,8 +1,9 @@
 #!/bin/bash
 set -x
-TFVARS=`basename ${1:-coreos.tfvars}`
-TFSTATE=`basename ${2:-terraform.tfstate}`
+TFDIR=`dirname $0`
+TFVARS=$PWD/${1:-$TFDIR/coreos.tfvars}
+TFSTATE=$PWD/${2:-$TFDIR/terraform.tfstate}
 ACTION=${3:-apply -auto-approve}
-pushd `dirname $0`
+pushd $TFDIR
 terraform $ACTION -state=$TFSTATE -var-file=$TFVARS
 popd
