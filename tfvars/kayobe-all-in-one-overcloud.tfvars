@@ -10,6 +10,7 @@ labels = {
   tiller_enabled           = "true"
   monitoring_enabled       = "true"
   auto_scaling_enabled     = "true"
+  autoscaler_tag           = "v1.15.2"
   auto_healing_enabled     = "true"
   auto_healing_controller  = "magnum-auto-healer"
   calico_ipv4pool          = "10.100.0.0/16"
