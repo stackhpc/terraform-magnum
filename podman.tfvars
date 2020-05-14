@@ -13,7 +13,7 @@ kubeconfig = "k8s-calico-podman"
 
 label_overrides = {
   use_podman         = "true"
-  kube_tag           = "v1.18.2" # https://github.com/kubernetes/kubernetes/releases
+  kube_tag           = "v1.18.3" # https://github.com/kubernetes/kubernetes/releases
   cloud_provider_tag = "v1.18.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
   etcd_tag           = "v3.4.6"
 }
