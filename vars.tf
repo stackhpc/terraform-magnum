@@ -80,7 +80,7 @@ variable "labels" {
     auto_scaling_enabled          = "true"
     auto_healing_enabled          = "true"
     auto_healing_controller       = "magnum-auto-healer"
-    ingress_controller            = "octavia"
+    ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
   }
