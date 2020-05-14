@@ -8,7 +8,7 @@ locals {
   }
   clusters = {
     for name, item in var.clusters : name => {
-      template_id = openstack_containerinfra_clustertemplate_v1.templates[format("k8s-%s-%s", item.network_driver, item.image)].id
+      template_id = lookup(lookup(openstack_containerinfra_clustertemplate_v1.templates, format("k8s-%s-%s", item.network_driver, item.image), {}), "id", null)
       labels      = merge(var.labels, var.label_overrides, lookup(var.cluster_label_overrides, name, {}))
     }
   }
