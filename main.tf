@@ -20,6 +20,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"
   server_type           = "vm"
+  tls_disabled          = var.tls_disabled
   network_driver        = each.value.network_driver
   image                 = each.value.image
   flavor                = var.flavor_name

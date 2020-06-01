@@ -66,6 +66,11 @@ variable "floating_ip_enabled" {
   default = "false"
 }
 
+variable "tls_disabled" {
+  type    = string
+  default = "false"
+}
+
 variable "master_lb_enabled" {
   type    = string
   default = "true"
@@ -80,6 +85,7 @@ variable "labels" {
     auto_scaling_enabled          = "true"
     auto_healing_enabled          = "true"
     auto_healing_controller       = "magnum-auto-healer"
+    magnum_auto_healer_tag        = "latest"
     ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
