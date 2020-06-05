@@ -79,7 +79,6 @@ variable "master_lb_enabled" {
 variable "labels" {
   type = map
   default = {
-    heat_container_agent_tag      = "ussuri-dev"
     tiller_enabled                = "true"
     monitoring_enabled            = "true"
     auto_scaling_enabled          = "true"

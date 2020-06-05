@@ -1,11 +1,11 @@
 clusters = {
   "k8s-calico-sonobuoy" = {
     network_driver = "calico"
-    image          = "fedora-sonobuoy-31.20200505.3.0-openstack.x86_64"
+    image          = "fedora-coreos-31.20200517.3.0-openstack.x86_64"
   }
   "k8s-flannel-sonobuoy" = {
     network_driver = "flannel"
-    image          = "fedora-sonobuoy-31.20200505.3.0-openstack.x86_64"
+    image          = "fedora-coreos-31.20200517.3.0-openstack.x86_64"
   }
 }
 
