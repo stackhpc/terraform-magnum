@@ -47,21 +47,16 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   create_timeout      = var.create_timeout
   labels              = each.value.labels
   docker_volume_size  = var.docker_volume_size
-
-  provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/${each.key}; openstack coe cluster config ${each.key} --dir ~/.kube/${each.key} --force"
-  }
-
 }
 
-resource "null_resource" "kubeconfig" {
-  triggers = {
-    kubeconfig = var.kubeconfig
-  }
+resource "local_file" "kubeconfigs" {
+  for_each    = local.clusters
+  content     = openstack_containerinfra_cluster_v1.clusters[each.key].kubeconfig.raw_config
+  filename = pathexpand("~/.kube/${each.key}/config")
+}
 
-  provisioner "local-exec" {
-    command = "ln -fs ~/.kube/${var.kubeconfig}/config ~/.kube/config"
-  }
-
-  depends_on = [openstack_containerinfra_cluster_v1.clusters]
+resource "local_file" "kubeconfig" {
+  for_each    = local.clusters
+  content     = openstack_containerinfra_cluster_v1.clusters[var.kubeconfig].kubeconfig.raw_config
+  filename = pathexpand("~/.kube/config")
 }
