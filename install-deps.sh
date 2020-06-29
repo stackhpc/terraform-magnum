@@ -34,7 +34,7 @@ VERSION=v3.1.2 && \
 	rm -rf helm.tar.gz tmp
 
 # Install known latest terraform
-VERSION=0.12.24 && \
+VERSION=0.12.26 && \
 	curl -L https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip --output terraform.zip && \
 	unzip terraform.zip && \
 	rm terraform.zip && \
