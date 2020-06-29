@@ -12,12 +12,12 @@ variable "external_network_id" {
   type = string
 }
 
-variable "fixed_network_name" {
+variable "fixed_network" {
   type    = string
   default = ""
 }
 
-variable "fixed_subnet_id" {
+variable "fixed_subnet" {
   type    = string
   default = ""
 }
