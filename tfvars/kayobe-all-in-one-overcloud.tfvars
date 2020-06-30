@@ -6,7 +6,6 @@ volume_driver       = ""
 master_lb_enabled   = "false"
 floating_ip_enabled = "true"
 labels = {
-  heat_container_agent_tag = "train-stable-2"
   tiller_enabled           = "true"
   monitoring_enabled       = "true"
   auto_scaling_enabled     = "true"
