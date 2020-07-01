@@ -1,4 +1,4 @@
-external_network_id = "internet"
+external_network    = "internet"
 keypair_name        = "macbook"
 master_flavor_name  = "bratwurst"
 flavor_name         = "bratwurst"

@@ -1,3 +1,3 @@
-external_network_id = "public"
+external_network    = "public"
 keypair_name        = "default"
 floating_ip_enabled = "true"
