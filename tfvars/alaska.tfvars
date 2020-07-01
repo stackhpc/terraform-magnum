@@ -1,0 +1,9 @@
+external_network    = "ilab"
+keypair_name        = "wendy"
+master_count        = 1
+node_count          = 1
+fixed_network       = "p3-internal"
+fixed_subnet        = "p3-internal"
+master_flavor_name  = "general.v1.tiny"
+flavor_name         = "compute-A"
+floating_ip_enabled = true
