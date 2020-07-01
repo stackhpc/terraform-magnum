@@ -8,7 +8,7 @@ variable "kubeconfig" {
   type = string
 }
 
-variable "external_network_id" {
+variable "external_network" {
   type = string
 }
 
@@ -88,6 +88,8 @@ variable "labels" {
     ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
+    kube_tag                      = "v1.18.3" # https://github.com/kubernetes/kubernetes/releases
+    cloud_provider_tag            = "v1.18.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
   }
 }
 

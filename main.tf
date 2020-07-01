@@ -26,7 +26,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   flavor                = var.flavor_name
   master_flavor         = var.master_flavor_name
   volume_driver         = var.volume_driver
-  external_network_id   = var.external_network_id
+  external_network_id   = var.external_network
   fixed_network         = var.fixed_network
   fixed_subnet          = var.fixed_subnet
   floating_ip_enabled   = var.floating_ip_enabled
@@ -50,13 +50,13 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
 }
 
 resource "local_file" "kubeconfigs" {
-  for_each    = local.clusters
-  content     = openstack_containerinfra_cluster_v1.clusters[each.key].kubeconfig.raw_config
+  for_each = local.clusters
+  content  = openstack_containerinfra_cluster_v1.clusters[each.key].kubeconfig.raw_config
   filename = pathexpand("~/.kube/${each.key}/config")
 }
 
 resource "local_file" "kubeconfig" {
-  for_each    = local.clusters
-  content     = openstack_containerinfra_cluster_v1.clusters[var.kubeconfig].kubeconfig.raw_config
+  for_each = local.clusters
+  content  = openstack_containerinfra_cluster_v1.clusters[var.kubeconfig].kubeconfig.raw_config
   filename = pathexpand("~/.kube/config")
 }
