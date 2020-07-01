@@ -8,6 +8,7 @@ clusters = {
 label_overrides = {
   kube_tag                 = "v1.15.12"
   cloud_provider_tag       = "v1.15.0"
+  tiller_enabled           = "true"
   heat_container_agent_tag = "train-stable-3"
 }
 

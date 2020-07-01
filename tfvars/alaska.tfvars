@@ -7,3 +7,4 @@ fixed_subnet        = "p3-internal"
 master_flavor_name  = "general.v1.tiny"
 flavor_name         = "compute-A"
 floating_ip_enabled = true
+volume_driver       = ""
