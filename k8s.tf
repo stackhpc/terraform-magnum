@@ -175,11 +175,6 @@ variable "kubelet_options" {
   default = ""
 }
 
-resource "openstack_compute_keypair_v2" "keypair" {
-  name       = var.keypair_name
-  public_key = file(var.public_key_file)
-}
-
 resource "openstack_containerinfra_clustertemplate_v1" "cluster_template_flannel" {
   name                  = var.cluster_template_flannel_name
   coe                   = "kubernetes"
@@ -207,7 +202,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
   cluster_template_id = openstack_containerinfra_clustertemplate_v1.cluster_template_flannel.id
   master_count        = var.master_count
   node_count          = var.node_count
-  keypair             = openstack_compute_keypair_v2.keypair.id
+  keypair             = var.keypair_name
 
   provisioner "local-exec" {
     command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force; ln -s ~/.kube/flannel/config ~/.kube/config -f"
@@ -265,7 +260,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
   cluster_template_id = openstack_containerinfra_clustertemplate_v1.cluster_template_calico.id
   master_count        = var.master_count
   node_count          = var.node_count
-  keypair             = openstack_compute_keypair_v2.keypair.id
+  keypair             = var.keypair_name
 
   provisioner "local-exec" {
     command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico --force; ln -s ~/.kube/calico/config ~/.kube/config -f"

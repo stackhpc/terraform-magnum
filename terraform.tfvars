@@ -1,5 +1,5 @@
 master_count        = 3
-max_node_count      = 16
+max_node_count      = 12
 flavor_name         = "m1.xlarge"
 master_flavor_name  = "m1.large"
 image_name          = "Fedora-AtomicHost-29-20191126.0"
