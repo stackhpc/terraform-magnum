@@ -55,8 +55,14 @@ resource "local_file" "kubeconfigs" {
   filename = pathexpand("~/.kube/${each.key}/config")
 }
 
-resource "local_file" "kubeconfig" {
-  for_each = local.clusters
-  content  = openstack_containerinfra_cluster_v1.clusters[var.kubeconfig].kubeconfig.raw_config
-  filename = pathexpand("~/.kube/config")
+resource "null_resource" "kubeconfig" {
+  triggers = {
+    kubeconfig = var.kubeconfig
+  }
+
+  provisioner "local-exec" {
+    command = "ln -fs ~/.kube/${var.kubeconfig}/config ~/.kube/config"
+  }
+
+  depends_on = [local_file.kubeconfigs]
 }

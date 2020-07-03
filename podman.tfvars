@@ -12,6 +12,6 @@ clusters = {
 kubeconfig = "k8s-calico-podman"
 
 label_overrides = {
-  use_podman         = "true"
-  etcd_tag           = "v3.4.6"
+  use_podman = "true"
+  etcd_tag   = "v3.4.6"
 }
