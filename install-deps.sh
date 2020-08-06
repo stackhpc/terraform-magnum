@@ -11,7 +11,7 @@ case $ID in
 		exit 1
 		;;
 esac
-sudo $PM install jq unzip -y
+sudo $PM install unzip -y
 
 # Install latest kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
