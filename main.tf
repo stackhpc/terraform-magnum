@@ -27,8 +27,6 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   master_flavor         = var.master_flavor_name
   volume_driver         = var.volume_driver
   external_network_id   = var.external_network
-  fixed_network         = var.fixed_network
-  fixed_subnet          = var.fixed_subnet
   floating_ip_enabled   = var.floating_ip_enabled
   master_lb_enabled     = var.master_lb_enabled
 
@@ -41,6 +39,8 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   for_each            = local.clusters
   name                = each.key
   cluster_template_id = each.value.template_id
+  fixed_network       = var.fixed_network
+  fixed_subnet        = var.fixed_subnet
   master_count        = var.master_count
   node_count          = var.node_count
   keypair             = var.keypair_name
