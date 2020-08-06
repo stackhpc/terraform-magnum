@@ -37,7 +37,7 @@ Deployment:
 
 - Optionally attach floating ip to the master node:
 
-        openstack server add floating ip \`openstack server list -f value -c Name | grep master-0\` 128.232.224.88
+        openstack server add floating ip `openstack server list -f value -c Name | grep master-0` 128.232.224.88
 
 - SSH into the master node:
 
