@@ -1,5 +1,8 @@
 # OpenStack Magnum and Terraform to deploy Kubernetes cluster
 
+Using this repository will deploy two separate Kubernetes clusters: one with
+Calico and another with Flannel.
+
 ## Autoscaling
 
 Prerequisites:
@@ -29,15 +32,19 @@ Deployment:
         ./upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
         ./upload-atomic.sh # if using older Magnum releases
 
-- To deploy the cluster (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
+- To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
 
         ./cluster.sh coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
         ./cluster.sh podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
         ./cluster.sh atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
 
-- Optionally attach floating ip to the master node:
+- Optionally attach a floating IP to the Calico master node:
 
-        openstack server add floating ip `openstack server list -f value -c Name | grep master-0` 128.232.224.88
+        openstack server add floating ip `openstack server list -f value -c Name | grep 'calico.*master-0'` <floating-ip>
+
+- Or to the Flannel master node:
+
+        openstack server add floating ip `openstack server list -f value -c Name | grep 'flannel.*master-0'` <floating-ip>
 
 - SSH into the master node:
 
