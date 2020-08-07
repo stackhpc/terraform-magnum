@@ -1,3 +1,25 @@
+variable "templates" {
+  type = map
+  default = {
+    "k8s-calico-atomic" = {
+      network_driver = "calico"
+      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    }
+    "k8s-flannel-atomic" = {
+      network_driver = "flannel"
+      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    }
+    "k8s-calico-coreos" = {
+      network_driver = "calico"
+      image          = "fedora-coreos-32.20200629.3.0-openstack.x86_64"
+    }
+    "k8s-flannel-coreos" = {
+      network_driver = "flannel"
+      image          = "fedora-coreos-32.20200629.3.0-openstack.x86_64"
+    }
+  }
+}
+
 variable "clusters" {
   type = map
   default = {
@@ -94,12 +116,6 @@ variable "labels" {
 
 variable "label_overrides" {
   type = map
-  default = {
-  }
-}
-
-variable "cluster_label_overrides" {
-  type = map(map(string))
   default = {
   }
 }

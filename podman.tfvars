@@ -1,11 +1,9 @@
 clusters = {
   "k8s-calico-podman" = {
-    network_driver = "calico"
-    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    template = "k8s-calico-atomic"
   }
   "k8s-flannel-podman" = {
-    network_driver = "flannel"
-    image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
+    template = "k8s-flannel-atomic"
   }
 }
 
