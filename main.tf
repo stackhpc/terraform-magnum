@@ -39,7 +39,7 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
 
 resource "local_file" "kubeconfigs" {
   for_each = var.clusters
-  content  = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kube_config", { raw_config : null }).raw_config
+  content  = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kubeconfig", { raw_config : null }).raw_config
   filename = pathexpand("~/.kube/${each.key}/config")
 }
 
