@@ -205,7 +205,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_flannel" {
   keypair             = var.keypair_name
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/flannel; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel --force; ln -s ~/.kube/flannel/config ~/.kube/config -f"
+    command = "mkdir -p ~/.kube/flannel/${var.cluster_flannel_name}; openstack coe cluster config ${var.cluster_flannel_name} --dir ~/.kube/flannel/${var.cluster_flannel_name} --force;"
   }
 
   labels = {
@@ -263,7 +263,7 @@ resource "openstack_containerinfra_cluster_v1" "cluster_calico" {
   keypair             = var.keypair_name
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.kube/calico; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico --force; ln -s ~/.kube/calico/config ~/.kube/config -f"
+    command = "mkdir -p ~/.kube/calico/${var.cluster_calico_name}; openstack coe cluster config ${var.cluster_calico_name} --dir ~/.kube/calico/${var.cluster_calico_name} --force;"
   }
 
   labels = {
