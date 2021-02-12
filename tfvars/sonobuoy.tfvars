@@ -1,12 +1,12 @@
 clusters = {
   "k8s-calico-coreos" = {
     template = "k8s-calico-coreos"
-    label_overrides = {
+    labels = {
     }
   }
   "k8s-flannel-coreos" = {
     template = "k8s-flannel-coreos"
-    label_overrides = {
+    labels = {
     }
   }
 }

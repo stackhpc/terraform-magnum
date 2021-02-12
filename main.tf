@@ -40,6 +40,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   fixed_network         = var.fixed_network
   fixed_subnet          = var.fixed_subnet
   insecure_registry     = var.insecure_registry
+  labels                = merge(var.template_labels, lookup(each.value, "labels", {}))
 
   lifecycle {
     create_before_destroy = true
@@ -54,7 +55,7 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   node_count          = var.node_count
   keypair             = openstack_compute_keypair_v2.keypair.id
   create_timeout      = var.create_timeout
-  labels              = merge(var.labels, var.label_overrides, lookup(each.value, "label_overrides", {}))
+  labels              = merge(var.template_labels, var.cluster_labels, lookup(each.value, "labels", {}))
   docker_volume_size  = var.docker_volume_size
   floating_ip_enabled = var.floating_ip_enabled
 }

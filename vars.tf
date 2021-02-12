@@ -1,13 +1,29 @@
 variable "templates" {
   type = map(any)
   default = {
-    "k8s-calico-coreos" = {
+    "k8s-1.18.15" = {
       network_driver = "calico"
       image          = "fedora-coreos-33.20210117.3.2-openstack.x86_64"
+      labels = {
+        kube_tag           = "v1.18.15-rancher1" # https://github.com/kubernetes/kubernetes/releases
+        cloud_provider_tag = "v1.18.0"           # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
+      }
     }
-    "k8s-flannel-coreos" = {
-      network_driver = "flannel"
+    "k8s-1.19.7" = {
+      network_driver = "calico"
       image          = "fedora-coreos-33.20210117.3.2-openstack.x86_64"
+      labels = {
+        kube_tag           = "v1.19.7-rancher1"  # https://github.com/kubernetes/kubernetes/releases
+        cloud_provider_tag = "v1.19.0"           # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
+      }
+    }
+    "k8s-1.20.2" = {
+      network_driver = "calico"
+      image          = "fedora-coreos-33.20210117.3.2-openstack.x86_64"
+      labels = {
+        kube_tag           = "v1.20.2-rancher1"  # https://github.com/kubernetes/kubernetes/releases
+        cloud_provider_tag = "v1.20.0"           # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
+      }
     }
   }
 }
@@ -67,7 +83,7 @@ variable "master_count" {
 
 variable "node_count" {
   type    = number
-  default = "2"
+  default = "1"
 }
 
 variable "create_timeout" {
@@ -96,23 +112,21 @@ variable "insecure_registry" {
 }
 
 
-variable "labels" {
+variable "template_labels" {
   type = map(any)
   default = {
     monitoring_enabled            = "true"
     auto_scaling_enabled          = "true"
     auto_healing_enabled          = "true"
     auto_healing_controller       = "magnum-auto-healer"
-    magnum_auto_healer_tag        = "latest"
+    magnum_auto_healer_tag        = "v1.20.0"
     ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
-    kube_tag                      = "v1.19.7-rancher2" # https://github.com/kubernetes/kubernetes/releases
-    cloud_provider_tag            = "v1.19.0"          # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
   }
 }
 
-variable "label_overrides" {
+variable "cluster_labels" {
   type = map(any)
   default = {
   }

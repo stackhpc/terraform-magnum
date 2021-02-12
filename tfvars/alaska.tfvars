@@ -8,3 +8,14 @@ master_flavor_name  = "general.v1.tiny"
 flavor_name         = "compute-A"
 floating_ip_enabled = true
 volume_driver       = ""
+insecure_registry   = "10.60.253.37"
+template_labels = {
+  container_infra_prefix        = "10.60.253.37/magnum/"
+  monitoring_enabled            = "true"
+  auto_scaling_enabled          = "true"
+  auto_healing_enabled          = "true"
+  auto_healing_controller       = "magnum-auto-healer"
+  magnum_auto_healer_tag        = "v1.20.0"
+  ingress_controller            = "nginx"
+  master_lb_floating_ip_enabled = "true"
+}
