@@ -23,8 +23,8 @@ def pull(image, max_width):
         try:
             d.images.pull(image)
             result = "pulled"
-        except docker.errors.NotFound:
-            result = "not found"
+        except Exception:
+            result = "error"
     cols = image.ljust(max_width), result
     print(" | ".join(cols))
 

@@ -1,5 +1,26 @@
-provider "openstack" {
-  version = "1.29.0"
+terraform {
+  required_providers {
+    openstack = {
+      source  = "terraform-provider-openstack/openstack"
+      version = ">=1.31.0"
+    }
+    local = {
+      source = "hashicorp/local"
+    }
+    null = {
+      source = "hashicorp/null"
+    }
+  }
+}
+
+data "local_file" "public_key" {
+  filename = pathexpand("~/.ssh/id_rsa.pub")
+}
+
+
+resource "openstack_compute_keypair_v2" "keypair" {
+  name       = var.keypair_name
+  public_key = data.local_file.public_key.content
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "templates" {
@@ -18,7 +39,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   master_lb_enabled     = var.master_lb_enabled
   fixed_network         = var.fixed_network
   fixed_subnet          = var.fixed_subnet
-  floating_ip_enabled   = var.floating_ip_enabled
+  insecure_registry     = var.insecure_registry
 
   lifecycle {
     create_before_destroy = true
@@ -31,16 +52,18 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   cluster_template_id = openstack_containerinfra_clustertemplate_v1.templates[each.value.template].id
   master_count        = var.master_count
   node_count          = var.node_count
-  keypair             = var.keypair_name
+  keypair             = openstack_compute_keypair_v2.keypair.id
   create_timeout      = var.create_timeout
   labels              = merge(var.labels, var.label_overrides, lookup(each.value, "label_overrides", {}))
   docker_volume_size  = var.docker_volume_size
+  floating_ip_enabled = var.floating_ip_enabled
 }
 
 resource "local_file" "kubeconfigs" {
-  for_each = var.clusters
-  content  = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kubeconfig", { raw_config : null }).raw_config
-  filename = pathexpand("~/.kube/${each.key}/config")
+  for_each   = var.clusters
+  content    = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kubeconfig", { raw_config : null }).raw_config
+  filename   = pathexpand("~/.kube/${each.key}/config")
+  depends_on = [openstack_containerinfra_cluster_v1.clusters]
 }
 
 resource "null_resource" "kubeconfig" {

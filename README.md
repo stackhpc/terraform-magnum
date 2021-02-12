@@ -3,78 +3,74 @@
 Using this repository will deploy two separate Kubernetes clusters: one with
 Calico and another with Flannel.
 
-## Autoscaling
-
-Prerequisites:
+## Prerequisites:
 
 - OpenStack Queens, Magnum Stein 8.1.0 minimum
-- Terraform v0.12.10, provider.openstack v1.23.0
+- Terraform v0.14.6, provider.openstack v1.37.1
 - Kubernetes client (to be able to run `kubectl`)
 
-Deployment:
+Install dependencies:
 
-- Initialise terraform
+    ./scripts/install-deps.sh
 
-        terraform init --upgrade
+## Deployment:
 
-- Copy sample variable file:
+Initialise terraform
 
-        cp terraform.tfvars{.sample,}
+    terraform init --upgrade
 
-- Edit `terraform.tfvars` and fill in details like `external_network_id` and `keypair_name`.
+Copy sample variable file:
 
-- Source your OpenStack cloud environment variables:
+    cp terraform.tfvars{.sample,}
 
-        source openrc.sh
+Edit `terraform.tfvars` and fill in details like `external_network_id` and `keypair_name`.
 
-- To upload the latest Fedora CoreOS image:
+Source your OpenStack cloud environment variables:
 
-        ./upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
-        ./upload-atomic.sh # if using older Magnum releases
+    source openrc.sh
 
-- To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
+To upload the latest Fedora CoreOS image:
 
-        ./cluster.sh coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
-        ./cluster.sh podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
-        ./cluster.sh atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
+    ./scripts/upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
+    ./scripts/upload-atomic.sh # if using older Magnum releases
 
-- Optionally attach a floating IP to the Calico master node:
+To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
 
-        openstack server add floating ip `openstack server list -f value -c Name | grep 'calico.*master-0'` <floating-ip>
+    ./scripts/cluster.sh tfvars/coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
+    ./scripts/cluster.sh tfvars/podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
+    ./scripts/cluster.sh tfvars/atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
 
-- Or to the Flannel master node:
+## Autoscaling
 
-        openstack server add floating ip `openstack server list -f value -c Name | grep 'flannel.*master-0'` <floating-ip>
+SSH into the master node:
 
-- SSH into the master node:
+    kubectl create deployment test-autoscale --image=nginx
+    kubectl scale deployment test-autoscale --replicas=100
 
-        kubectl create deployment test-autoscale --image=nginx
-        kubectl scale deployment test-autoscale --replicas=100
+Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
 
-- Sample output of `kubectl logs deploy/cluster-autoscaler -n kube-system`:
-
-        I1017 13:26:11.617165       1 leaderelection.go:217] attempting to acquire leader lease  kube-system/cluster-autoscaler...
-        I1017 13:26:11.626499       1 leaderelection.go:227] successfully acquired lease kube-system/cluster-autoscaler
-        I1017 13:26:13.804795       1 magnum_manager_heat.go:293] For stack ID 3e981ac7-4a6e-47a7-9d16-7874f5e108a0, stack name is k8s-sb7k6mtqieim
-        I1017 13:26:13.974239       1 magnum_manager_heat.go:310] Found nested kube_minions stack: name k8s-sb7k6mtqieim-kube_minions-33izbolw5kvp, ID 2f7b5dff-9960-4ae2-8572-abed511d0801
-        I1017 13:32:25.461803       1 scale_up.go:689] Scale-up: setting group default-worker size to 3
-        I1017 13:32:28.400053       1 magnum_nodegroup.go:101] Increasing size by 1, 2->3
-        I1017 13:33:02.387803       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
-        I1017 13:36:11.528032       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_COMPLETE status
-        I1017 13:36:21.550679       1 scale_up.go:689] Scale-up: setting group default-worker size to 5
-        I1017 13:36:24.157717       1 magnum_nodegroup.go:101] Increasing size by 2, 3->5
-        I1017 13:36:58.062981       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
-        I1017 13:40:07.134681       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_COMPLETE status
-        W1017 13:50:14.668777       1 reflector.go:289] k8s.io/autoscaler/cluster-autoscaler/utils/kubernetes/listers.go:190: watch of *v1.Pod ended with: too old resource version: 15787 (16414)
-        I1017 14:00:17.891270       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-2
-        I1017 14:00:17.891315       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-3
-        I1017 14:00:17.891323       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-4
-        I1017 14:00:23.255551       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-2 to stack index 2
-        I1017 14:00:23.255579       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-4 to stack index 4
-        I1017 14:00:23.255584       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-3 to stack index 3
-        I1017 14:00:24.283658       1 magnum_manager_heat.go:280] Waited for stack UPDATE_IN_PROGRESS status
-        I1017 14:01:25.030818       1 magnum_manager_heat.go:280] Waited for stack UPDATE_COMPLETE status
-        I1017 14:01:58.970490       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
+    I1017 13:26:11.617165       1 leaderelection.go:217] attempting to acquire leader lease  kube-system/cluster-autoscaler...
+    I1017 13:26:11.626499       1 leaderelection.go:227] successfully acquired lease kube-system/cluster-autoscaler
+    I1017 13:26:13.804795       1 magnum_manager_heat.go:293] For stack ID 3e981ac7-4a6e-47a7-9d16-7874f5e108a0, stack name is k8s-sb7k6mtqieim
+    I1017 13:26:13.974239       1 magnum_manager_heat.go:310] Found nested kube_minions stack: name k8s-sb7k6mtqieim-kube_minions-33izbolw5kvp, ID 2f7b5dff-9960-4ae2-8572-abed511d0801
+    I1017 13:32:25.461803       1 scale_up.go:689] Scale-up: setting group default-worker size to 3
+    I1017 13:32:28.400053       1 magnum_nodegroup.go:101] Increasing size by 1, 2->3
+    I1017 13:33:02.387803       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
+    I1017 13:36:11.528032       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_COMPLETE status
+    I1017 13:36:21.550679       1 scale_up.go:689] Scale-up: setting group default-worker size to 5
+    I1017 13:36:24.157717       1 magnum_nodegroup.go:101] Increasing size by 2, 3->5
+    I1017 13:36:58.062981       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
+    I1017 13:40:07.134681       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_COMPLETE status
+    W1017 13:50:14.668777       1 reflector.go:289] k8s.io/autoscaler/cluster-autoscaler/utils/kubernetes/listers.go:190: watch of *v1.Pod ended with: too old resource version: 15787 (16414)
+    I1017 14:00:17.891270       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-2
+    I1017 14:00:17.891315       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-3
+    I1017 14:00:17.891323       1 scale_down.go:882] Scale-down: removing empty node k8s-sb7k6mtqieim-minion-4
+    I1017 14:00:23.255551       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-2 to stack index 2
+    I1017 14:00:23.255579       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-4 to stack index 4
+    I1017 14:00:23.255584       1 magnum_manager_heat.go:344] Resolved node k8s-sb7k6mtqieim-minion-3 to stack index 3
+    I1017 14:00:24.283658       1 magnum_manager_heat.go:280] Waited for stack UPDATE_IN_PROGRESS status
+    I1017 14:01:25.030818       1 magnum_manager_heat.go:280] Waited for stack UPDATE_COMPLETE status
+    I1017 14:01:58.970490       1 magnum_nodegroup.go:67] Waited for cluster UPDATE_IN_PROGRESS status
 
 ## Cinder Volumes
 
@@ -151,20 +147,18 @@ You can then proceed to spawn a PVC `kubectl apply -f https://raw.githubusercont
 
 ## Helm
 
-To use helm with tiller installed on the cluster, first of all, install `helm`:
+Helm should be installed as part of `./scripts/install-deps.sh` script.
 
-    curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+If using Helm v2, source `magnum-tiller.sh` to use tiller installed in the `magnum-tiller` namespace.
 
-Now source `magnum-tiller.sh` to use tiller installed in the `magnum-tiller` namespace.
-
-    source magnum-tiller.sh
-    helm version
+    source ./scripts/magnum-tiller.sh
+    helm2 version
 
 If there is a mismatch between the intalled version of helm client and tiller installed on the server, upgrade tiller.
 
-    helm init --upgrade
+    helm2 init --upgrade
 
-NOTE: magnum currently uses Helm 2, and tiller has been deprecated in Helm 3.
+NOTE: Magnum currently uses Helm 2, and tiller has been deprecated in Helm 3.
 
 ## Ingress
 

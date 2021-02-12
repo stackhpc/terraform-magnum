@@ -1,27 +1,19 @@
 variable "templates" {
-  type = map
+  type = map(any)
   default = {
-    "k8s-calico-atomic" = {
-      network_driver = "calico"
-      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    }
-    "k8s-flannel-atomic" = {
-      network_driver = "flannel"
-      image          = "Fedora-AtomicHost-29-20191126.0.x86_64"
-    }
     "k8s-calico-coreos" = {
       network_driver = "calico"
-      image          = "fedora-coreos-32.20200809.3.0-openstack.x86_64"
+      image          = "fedora-coreos-33.20210117.3.2-openstack.x86_64"
     }
     "k8s-flannel-coreos" = {
       network_driver = "flannel"
-      image          = "fedora-coreos-32.20200809.3.0-openstack.x86_64"
+      image          = "fedora-coreos-33.20210117.3.2-openstack.x86_64"
     }
   }
 }
 
 variable "clusters" {
-  type = map
+  type = map(any)
   default = {
   }
 }
@@ -70,17 +62,17 @@ variable "docker_volume_size" {
 
 variable "master_count" {
   type    = number
-  default = 1
+  default = "1"
 }
 
 variable "node_count" {
   type    = number
-  default = 1
+  default = "2"
 }
 
 variable "create_timeout" {
   type    = number
-  default = 20
+  default = "10"
 }
 
 variable "floating_ip_enabled" {
@@ -98,8 +90,14 @@ variable "master_lb_enabled" {
   default = "true"
 }
 
+variable "insecure_registry" {
+  type    = string
+  default = ""
+}
+
+
 variable "labels" {
-  type = map
+  type = map(any)
   default = {
     monitoring_enabled            = "true"
     auto_scaling_enabled          = "true"
@@ -109,13 +107,13 @@ variable "labels" {
     ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
-    kube_tag                      = "v1.18.8" # https://github.com/kubernetes/kubernetes/releases
-    cloud_provider_tag            = "v1.18.0" # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
+    kube_tag                      = "v1.19.7-rancher2" # https://github.com/kubernetes/kubernetes/releases
+    cloud_provider_tag            = "v1.19.0"          # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
   }
 }
 
 variable "label_overrides" {
-  type = map
+  type = map(any)
   default = {
   }
 }

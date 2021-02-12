@@ -1,6 +1,20 @@
+# Scripts
+
+## upload-coreos.sh
+
+Upload the latest stable Fedora Coreos image to glance.
+
+## upload-atomic.sh [deprecated]
+
+Upload the last ever Fedora Atomic image to Glance.
+
+## pull\_retag\_push.py
+
+Pull retag and push list of images to a local container registry.
+
 Usage:
 
-    ./pull_retag_push.py -r localhost:5000 -i master.txt worker.txt
+    ./pull_retag_push.py -r localhost:5000 -i images.txt
 
     Pulling images in scripts/master.txt
     kubernetesui/dashboard:v2.0.0                               | exists locally

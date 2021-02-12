@@ -1,2 +1,3 @@
-external_network = "1c7dcea7-f4f0-48a0-ac2d-19a547c01603"
-keypair_name = "default"
+external_network    = "public"
+keypair_name        = "default"
+floating_ip_enabled = "true"
