@@ -32,14 +32,16 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   tls_disabled          = var.tls_disabled
   network_driver        = each.value.network_driver
   image                 = each.value.image
-  flavor                = var.flavor_name
-  master_flavor         = var.master_flavor_name
+  flavor                = lookup(each.value, "flavor", var.flavor)
+  master_flavor         = lookup(each.value, "master_flavor", var.master_flavor)
   volume_driver         = var.volume_driver
   external_network_id   = var.external_network
   master_lb_enabled     = var.master_lb_enabled
   fixed_network         = var.fixed_network
   fixed_subnet          = var.fixed_subnet
   insecure_registry     = var.insecure_registry
+  floating_ip_enabled   = var.floating_ip_enabled
+  docker_volume_size    = var.docker_volume_size
   labels                = merge(var.template_labels, lookup(each.value, "labels", {}))
 
   lifecycle {
@@ -55,9 +57,10 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   node_count          = var.node_count
   keypair             = openstack_compute_keypair_v2.keypair.id
   create_timeout      = var.create_timeout
-  labels              = merge(var.template_labels, var.cluster_labels, lookup(each.value, "labels", {}))
-  docker_volume_size  = var.docker_volume_size
   floating_ip_enabled = var.floating_ip_enabled
+  flavor              = lookup(each.value, "flavor", var.flavor)
+  master_flavor       = lookup(each.value, "master_flavor", var.master_flavor)
+  labels              = merge(var.template_labels, var.cluster_labels, lookup(each.value, "labels", {}))
 }
 
 resource "local_file" "kubeconfigs" {

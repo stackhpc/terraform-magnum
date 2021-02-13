@@ -1,4 +1,4 @@
 external_network   = "internet"
-master_flavor_name = "general.v1.tiny"
-flavor_name        = "general.v1.tiny"
+master_flavor = "general.v1.tiny"
+flavor        = "general.v1.tiny"
 keypair_name       = "default"
