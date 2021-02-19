@@ -1,12 +1,13 @@
 docker.io/openstackmagnum/heat-container-agent:victoria-dev
+docker.io/openstackmagnum/heat-container-agent:ussuri-stable-1
 gcr.io/google_containers/pause:3.1
 quay.io/calico/cni:v3.13.1
 quay.io/calico/node:v3.13.1
 quay.io/calico/pod2daemon-flexvol:v3.13.1
 quay.io/prometheus/node-exporter:v0.18.1
-rancher/hyperkube:v1.18.15-rancher1
-rancher/hyperkube:v1.19.7-rancher1
-rancher/hyperkube:v1.20.2-rancher1
+rancher/hyperkube:v1.18.16-rancher1
+rancher/hyperkube:v1.19.8-rancher1
+rancher/hyperkube:v1.20.4-rancher1
 quay.io/coreos/flannel-cni:v0.3.0
 quay.io/coreos/flannel:v0.12.0-amd64
 coredns/coredns:1.6.6

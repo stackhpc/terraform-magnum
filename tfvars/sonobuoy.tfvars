@@ -16,6 +16,6 @@ node_count = 2 # Sonobuoy tests require at least 2 nodes
 kubeconfig = "k8s-calico-coreos"
 
 labels = {
-  "kube_tag"           = "v1.20.2-rancher1"
+  "kube_tag"           = "v1.20.3-rancher1"
   "cloud_provider_tag" = "v1.20.0"
 }

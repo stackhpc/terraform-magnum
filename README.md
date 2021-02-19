@@ -190,3 +190,14 @@ As an example, you can now proceed to map an Ingress to a service in the same Ku
 You will also need to ensure that the security group rules allow access to HTTP endpoints.
 
     for name in `openstack security group list -c Name -f value | grep minion`; do openstack security group rule create --ingress $name --dst-port 80 --protocol tcp; done
+
+## Development
+
+When developing terraform plugin, place the following in your `~/.terraformrc`:
+
+    provider_installation {
+      dev_overrides {
+        "terraform-provider-openstack/openstack" = "/home/ubuntu/terraform-provider-openstack"
+      }
+      direct {}
+    }

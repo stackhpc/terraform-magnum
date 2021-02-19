@@ -24,7 +24,7 @@ template_labels = {
 
 clusters = {
   "k8s-alaska" = {
-    template = "k8s-1.18.15"
+    template = "k8s-1.18.16"
     flavor   = "compute-A"
     labels = {
     }

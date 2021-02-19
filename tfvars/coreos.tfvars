@@ -1,16 +1,16 @@
 clusters = {
   "k8s-1.18" = {
-    template = "k8s-1.18.15"
+    template = "k8s-1.18.16"
     labels = {
     }
   }
   "k8s-1.19" = {
-    template = "k8s-1.19.7"
+    template = "k8s-1.19.8"
     labels = {
     }
   }
   "k8s-1.20" = {
-    template = "k8s-1.20.2"
+    template = "k8s-1.20.4"
     labels = {
     }
   }

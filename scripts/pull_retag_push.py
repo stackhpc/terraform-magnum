@@ -47,15 +47,15 @@ async def main():
     parser.add_argument(
         "--inputs",
         "-i",
-        default=[],
+        default=["images.txt"],
         nargs="+",
-        help="list of input files with list of remote images to pull, retag and push",
+        help="list of input files with list of remote images to pull, retag and push (default: images.txt)",
     )
     parser.add_argument(
         "--registry",
         "-r",
-        default="localhost:5000",
-        help="name of the local registry to retag and push images to",
+        default="10.60.253.37/magnum",
+        help="name of the local registry to retag and push images to (default: 10.60.253.37/magnum)",
     )
     args = parser.parse_args()
 

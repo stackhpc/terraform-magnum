@@ -25,7 +25,7 @@ template_labels = {
 
 clusters = {
   "k8s-sriov" = {
-    template = "k8s-sriov-1.18.15"
+    template = "k8s-sriov-1.18.16"
     labels = {
     }
   }
@@ -33,29 +33,29 @@ clusters = {
 kubeconfig = "k8s-sriov"
 
 templates = {
-  "k8s-sriov-1.18.15" = {
+  "k8s-sriov-1.18.16" = {
     network_driver = "calico"
     image          = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.18.15-rancher1" # https://github.com/kubernetes/kubernetes/releases
+      kube_tag           = "v1.18.16-rancher1" # https://github.com/kubernetes/kubernetes/releases
       cloud_provider_tag = "v1.18.0"           # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
       vnic_type          = "direct"
     }
   }
-  "k8s-sriov-1.19.7" = {
+  "k8s-sriov-1.19.8" = {
     network_driver = "calico"
     image          = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.19.7-rancher1" # https://github.com/kubernetes/kubernetes/releases
+      kube_tag           = "v1.19.8-rancher1" # https://github.com/kubernetes/kubernetes/releases
       cloud_provider_tag = "v1.19.0"          # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
       vnic_type          = "direct"
     }
   }
-  "k8s-sriov-1.20.2" = {
+  "k8s-sriov-1.20.3" = {
     network_driver = "calico"
     image          = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.20.2-rancher1" # https://github.com/kubernetes/kubernetes/releases
+      kube_tag           = "v1.20.3-rancher1" # https://github.com/kubernetes/kubernetes/releases
       cloud_provider_tag = "v1.20.0"          # https://hub.docker.com/r/k8scloudprovider/openstack-cloud-controller-manager/tags
       vnic_type          = "direct"
     }
