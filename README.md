@@ -13,6 +13,33 @@ Install dependencies:
 
     ./scripts/install-deps.sh
 
+Upload the latest stable Fedora Coreos image to glance:
+
+    ./scripts/upload-coreos.sh
+
+Upload the last ever Fedora Atomic image to Glance (DEPRECATED):
+
+    ./scripts/upload-atomic.sh
+
+Pull retag and push list of images to a local container registry:
+
+    ./scripts/pull-retag-push.py -r 10.60.253.37/magnum -i images.txt
+
+    Pulling images in images.txt
+    rancher/hyperkube:v1.19.1-rancher1                                   | exists locally
+    k8s.gcr.io/hyperkube:v1.18.8                                         | exists locally
+    ...
+    gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.1.2 | exists locally
+    quay.io/coreos/configmap-reload:v0.0.1                               | exists locally
+    ---
+    Pushing images in images.txt
+    localhost:5000/hyperkube:v1.19.1-rancher1                            | pushed
+    localhost:5000/hyperkube:v1.18.8                                     | pushed
+    ...
+    localhost:5000/csi-node-driver-registrar:v1.1.0                      | pushed
+    localhost:5000/node-problem-detector:v0.6.2                          | pushed
+    ---
+
 ## Deployment:
 
 Initialise terraform
@@ -39,6 +66,22 @@ To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using
     ./scripts/cluster.sh tfvars/coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
     ./scripts/cluster.sh tfvars/podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
     ./scripts/cluster.sh tfvars/atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
+
+To execute `terraform plan`:
+
+    ./scripts/plan.sh tfvars/coreos.tfvars
+
+To execute `terraform taint` against all clusters:
+
+    ./scripts/taint.sh tfvars/coreos.tfvars
+
+To execute `terraform destroy`:
+
+    ./scripts/destroy.sh tfvars/coreos.tfvars
+
+To delete all clusters and templates manually using the OpenStack CLI [DANGER - for dev only]:
+
+    ./scripts/delete-all.sh
 
 ## Autoscaling
 

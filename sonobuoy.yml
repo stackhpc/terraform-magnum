@@ -1,0 +1,8 @@
+buildImageRegistry: k8s.gcr.io/build-image
+dockerGluster: 10.60.253.37/magnum #docker.io/gluster
+dockerLibraryRegistry: 10.60.253.37/magnum #docker.io/library
+e2eRegistry: gcr.io/kubernetes-e2e-test-images
+e2eVolumeRegistry: gcr.io/kubernetes-e2e-test-images/volume
+gcRegistry: k8s.gcr.io
+promoterE2eRegistry: k8s.gcr.io/e2e-test-images
+sigStorageRegistry: k8s.gcr.io/sig-storage

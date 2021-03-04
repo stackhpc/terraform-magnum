@@ -23,7 +23,7 @@ resource "openstack_compute_keypair_v2" "keypair" {
 }
 
 resource "openstack_containerinfra_clustertemplate_v1" "templates" {
-  for_each              = var.templates
+  for_each              = merge(var.templates, var.extra_templates)
   name                  = each.key
   coe                   = "kubernetes"
   docker_storage_driver = "overlay2"

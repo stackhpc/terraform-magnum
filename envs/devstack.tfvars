@@ -1,5 +1,5 @@
 external_network    = "public"
-keypair_name        = "default"
+keypair_name        = "devstack"
 floating_ip_enabled = "true"
 insecure_registry   = "10.60.253.37"
 cluster_labels = {

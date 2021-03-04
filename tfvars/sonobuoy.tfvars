@@ -1,11 +1,6 @@
 clusters = {
-  "k8s-calico-coreos" = {
-    template = "k8s-calico-coreos"
-    labels = {
-    }
-  }
-  "k8s-flannel-coreos" = {
-    template = "k8s-flannel-coreos"
+  "k8s-sonobuoy-1.20" = {
+    template = "k8s-1.20.4"
     labels = {
     }
   }
@@ -13,9 +8,4 @@ clusters = {
 
 node_count = 2 # Sonobuoy tests require at least 2 nodes
 
-kubeconfig = "k8s-calico-coreos"
-
-labels = {
-  "kube_tag"           = "v1.20.3-rancher1"
-  "cloud_provider_tag" = "v1.20.0"
-}
+kubeconfig = "k8s-sonobuoy-1.20"

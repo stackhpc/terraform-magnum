@@ -4,48 +4,32 @@ variable "templates" {
   type = map(any)
   default = {
     "k8s-1.18.16" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
+      image = "fedora-coreos-33.20210217.3.0-openstack.x86_64"
       labels = {
         kube_tag           = "v1.18.16-rancher1"
         cloud_provider_tag = "v1.18.0"
       }
     }
     "k8s-1.19.8" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
+      image = "fedora-coreos-33.20210217.3.0-openstack.x86_64"
       labels = {
         kube_tag           = "v1.19.8-rancher1"
         cloud_provider_tag = "v1.19.0"
       }
     }
     "k8s-1.20.4" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
+      image = "fedora-coreos-33.20210217.3.0-openstack.x86_64"
       labels = {
         kube_tag           = "v1.20.4-rancher1"
         cloud_provider_tag = "v1.20.0"
       }
     }
-    "k8s-1.18.15" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
-      labels = {
-        kube_tag           = "v1.18.15-rancher1"
-        cloud_provider_tag = "v1.18.0"
-      }
-    }
-    "k8s-1.19.7" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
-      labels = {
-        kube_tag           = "v1.19.7-rancher1"
-        cloud_provider_tag = "v1.19.0"
-      }
-    }
-    "k8s-1.20.2" = {
-      image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
-      labels = {
-        kube_tag           = "v1.20.2-rancher1"
-        cloud_provider_tag = "v1.20.0"
-      }
-    }
   }
+}
+
+variable "extra_templates" {
+  type    = map(any)
+  default = {}
 }
 
 variable "template_labels" {

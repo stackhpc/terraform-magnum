@@ -1,7 +1,7 @@
 external_network    = "internet"
 keypair_name        = "macbook"
-master_flavor  = "bratwurst"
-flavor         = "bratwurst"
+master_flavor       = "bratwurst"
+flavor              = "bratwurst"
 volume_driver       = ""
 floating_ip_enabled = false
 master_count        = 1
