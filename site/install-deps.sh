@@ -1,3 +1,4 @@
+#!/bin/bash
 set -ex
 source /etc/os-release
 case $ID in

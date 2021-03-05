@@ -11,19 +11,19 @@ Calico and another with Flannel.
 
 Install dependencies:
 
-    ./scripts/install-deps.sh
+    ./site/install-deps.sh
 
 Upload the latest stable Fedora Coreos image to glance:
 
-    ./scripts/upload-coreos.sh
+    ./site/upload-coreos.sh
 
 Upload the last ever Fedora Atomic image to Glance (DEPRECATED):
 
-    ./scripts/upload-atomic.sh
+    ./site/upload-atomic.sh
 
 Pull retag and push list of images to a local container registry:
 
-    ./scripts/pull-retag-push.py -r 10.60.253.37/magnum -i images.txt
+    ./site/pull-retag-push.py -r 10.60.253.37/magnum -i images.txt
 
     Pulling images in images.txt
     rancher/hyperkube:v1.19.1-rancher1                                   | exists locally
@@ -58,30 +58,30 @@ Source your OpenStack cloud environment variables:
 
 To upload the latest Fedora CoreOS image:
 
-    ./scripts/upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
-    ./scripts/upload-atomic.sh # if using older Magnum releases
+    ./site/upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
+    ./site/upload-atomic.sh # if using older Magnum releases
 
 To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
 
-    ./scripts/cluster.sh tfvars/coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
-    ./scripts/cluster.sh tfvars/podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
-    ./scripts/cluster.sh tfvars/atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
+    ./site/create.sh tfvars/coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
+    ./site/create.sh tfvars/podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
+    ./site/create.sh tfvars/atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
 
 To execute `terraform plan`:
 
-    ./scripts/plan.sh tfvars/coreos.tfvars
+    ./site/plan.sh tfvars/coreos.tfvars
 
 To execute `terraform taint` against all clusters:
 
-    ./scripts/taint.sh tfvars/coreos.tfvars
+    ./site/taint.sh tfvars/coreos.tfvars
 
 To execute `terraform destroy`:
 
-    ./scripts/destroy.sh tfvars/coreos.tfvars
+    ./site/destroy.sh tfvars/coreos.tfvars
 
-To delete all clusters and templates manually using the OpenStack CLI [DANGER - for dev only]:
+To delete ALL clusters and templates manually using the OpenStack CLI [DANGER - for dev use only]:
 
-    ./scripts/delete-all.sh
+    ./site/destroy-cli.sh
 
 ## Autoscaling
 
@@ -190,11 +190,11 @@ You can then proceed to spawn a PVC `kubectl apply -f https://raw.githubusercont
 
 ## Helm
 
-Helm should be installed as part of `./scripts/install-deps.sh` script.
+Helm should be installed as part of `./site/install-deps.sh` script.
 
 If using Helm v2, source `magnum-tiller.sh` to use tiller installed in the `magnum-tiller` namespace.
 
-    source ./scripts/magnum-tiller.sh
+    source ./site/magnum-tiller.sh
     helm2 version
 
 If there is a mismatch between the intalled version of helm client and tiller installed on the server, upgrade tiller.

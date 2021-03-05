@@ -1,3 +1,5 @@
+#!/bin/bash
+set -ex
 mkdir -p ${HOME}/ws/helm_home
 export HELM_HOME="${HOME}/ws/helm_home"
 export HELM_TLS_ENABLE="true"
