@@ -7,14 +7,14 @@ variable "templates" {
       image = "fedora-coreos-33.20210217.3.0-openstack.x86_64"
       labels = {
         kube_tag           = "v1.18.16-rancher1"
-        cloud_provider_tag = "v1.18.0"
+        cloud_provider_tag = "v1.18.2"
       }
     }
     "k8s-1.19.8" = {
       image = "fedora-coreos-33.20210217.3.0-openstack.x86_64"
       labels = {
         kube_tag           = "v1.19.8-rancher1"
-        cloud_provider_tag = "v1.19.0"
+        cloud_provider_tag = "v1.19.2"
       }
     }
     "k8s-1.20.4" = {
@@ -103,5 +103,35 @@ variable "tls_disabled" {
 variable "master_lb_enabled" {
   type    = string
   default = "true"
+}
+
+resource "openstack_containerinfra_clustertemplate_v1" "templates" {
+  for_each              = merge(var.templates, var.extra_templates)
+  name                  = each.key
+  coe                   = "kubernetes"
+  docker_storage_driver = "overlay2"
+  server_type           = "vm"
+  tls_disabled          = var.tls_disabled
+  image                 = each.value.image
+  volume_driver         = var.volume_driver
+  external_network_id   = var.external_network
+  master_lb_enabled     = var.master_lb_enabled
+  fixed_network         = var.fixed_network
+  fixed_subnet          = var.fixed_subnet
+  insecure_registry     = var.insecure_registry
+  floating_ip_enabled   = var.floating_ip_enabled
+  docker_volume_size    = var.docker_volume_size
+  network_driver        = lookup(each.value, "network_driver", var.network_driver)
+  flavor                = lookup(each.value, "flavor", var.flavor)
+  master_flavor         = lookup(each.value, "master_flavor", var.master_flavor)
+  labels                = merge(var.template_labels, lookup(each.value, "labels", {}))
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+output "templates" {
+  value = openstack_containerinfra_clustertemplate_v1.templates
 }
 
