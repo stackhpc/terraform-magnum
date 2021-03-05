@@ -61,19 +61,19 @@ To upload the latest Fedora CoreOS image:
     ./site/upload-coreos.sh # requires Magnum Train 9.1.0 minimum and Heat Train.
     ./site/upload-atomic.sh # if using older Magnum releases
 
+To execute `terraform plan`:
+
+    ./site/cluster.sh tfvars/coreos.tfvars
+
 To deploy the clusters (replace with `atomic.tfvars` or `podman.tfvars` if using Magnum release older than Train 9.1.0):
 
     ./site/create.sh tfvars/coreos.tfvars # requires Magnum Train (9.1.0) and Heat Train minimum.
     ./site/create.sh tfvars/podman.tfvars # requires Magnum Train (9.1.0) and Heat Queens minimum.
     ./site/create.sh tfvars/atomic.tfvars # requires Magnum Stein (8.1.0) and Heat Queens minimum.
 
-To execute `terraform plan`:
-
-    ./site/plan.sh tfvars/coreos.tfvars
-
 To execute `terraform taint` against all clusters:
 
-    ./site/taint.sh tfvars/coreos.tfvars
+    ./site/taint.sh
 
 To execute `terraform destroy`:
 
