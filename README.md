@@ -81,7 +81,7 @@ To execute `terraform destroy`:
 
 To delete ALL clusters and templates manually using the OpenStack CLI [DANGER - for dev use only]:
 
-    ./site/destroy-cli.sh
+    ./site/purge.sh
 
 ## Autoscaling
 
