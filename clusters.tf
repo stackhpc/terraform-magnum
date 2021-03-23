@@ -31,7 +31,7 @@ variable "node_count" {
 
 variable "create_timeout" {
   type    = number
-  default = "10"
+  default = "15"
 }
 
 variable "kubeconfig" {
