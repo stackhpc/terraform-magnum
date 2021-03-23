@@ -9,7 +9,7 @@ IMAGE=${IMAGE:-fedora-coreos-$DATE-openstack.$ARCH}
 [[ "$DATE" = "$LATEST" ]] && echo "Using the latest image: $IMAGE" || echo "export DATE=$LATEST to upload the latest image because the image you are using is out of date: $IMAGE"
 FNAME=$IMAGE.qcow2
 openstack image show $IMAGE || (
-    [[ -f $FNAME ]] || (
+    [[ -f "$FNAME" ]] || (
         curl -OL https://builds.coreos.fedoraproject.org/prod/streams/$STREAM/builds/$DATE/$ARCH/$FNAME.xz
         unxz $FNAME.xz
     )
