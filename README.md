@@ -23,16 +23,16 @@ Upload the last ever Fedora Atomic image to Glance (DEPRECATED):
 
 Pull retag and push list of images to a local container registry:
 
-    ./site/pull-retag-push.py -r 10.60.253.37/magnum -i images.txt
+    ./site/pull-retag-push.py -r harbor.cumulus.openstack.hpc.cam.ac.uk/magnum -i images/master.txt
 
-    Pulling images in images.txt
+    Pulling images in master.txt
     rancher/hyperkube:v1.19.1-rancher1                                   | exists locally
     k8s.gcr.io/hyperkube:v1.18.8                                         | exists locally
     ...
     gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.1.2 | exists locally
     quay.io/coreos/configmap-reload:v0.0.1                               | exists locally
     ---
-    Pushing images in images.txt
+    Pushing images in master.txt
     localhost:5000/hyperkube:v1.19.1-rancher1                            | pushed
     localhost:5000/hyperkube:v1.18.8                                     | pushed
     ...
