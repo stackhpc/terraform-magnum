@@ -40,7 +40,6 @@ variable "template_labels" {
     auto_healing_enabled          = "true"
     auto_healing_controller       = "magnum-auto-healer"
     magnum_auto_healer_tag        = "v1.20.0"
-    ingress_controller            = "nginx"
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
   }
