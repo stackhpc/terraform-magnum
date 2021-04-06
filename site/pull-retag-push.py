@@ -9,10 +9,10 @@ import sys
 d = docker.from_env()
 
 
-def read_images(fname):
+def read_images(fname, filters=[lambda x: x, lambda x: not x.startswith("#")]):
     with open(fname) as f:
         images = f.read().splitlines()
-    return images
+    return [i for i in images if all(f(i) for f in filters)]
 
 
 def pull(image, max_width):
@@ -54,7 +54,7 @@ async def main():
     parser.add_argument(
         "--registry",
         "-r",
-        default="10.60.253.37/magnum",
+        default="harbor.cumulus.openstack.hpc.cam.ac.uk/magnum",
         help="name of the local registry to retag and push images to (default: 10.60.253.37/magnum)",
     )
     args = parser.parse_args()
