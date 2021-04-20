@@ -13,7 +13,7 @@ insecure_registry   = "10.60.253.37"
 create_timeout      = 60
 
 template_labels = {
-  container_infra_prefix  = "10.60.253.37/magnum/"
+  container_infra_prefix = "harbor.cumulus.openstack.hpc.cam.ac.uk/magnum/"
   monitoring_enabled      = "true"
   auto_scaling_enabled    = "true"
   auto_healing_enabled    = "true"
