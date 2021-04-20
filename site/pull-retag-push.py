@@ -9,7 +9,7 @@ import sys
 d = docker.from_env()
 
 
-def read_images(fname, filters=[lambda x: x, lambda x: not x.startswith("#")]):
+def read_images(fname, filters):
     with open(fname) as f:
         images = f.read().splitlines()
     return [i for i in images if all(f(i) for f in filters)]
@@ -45,9 +45,7 @@ def push(local_registry, image, max_width):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--inputs",
-        "-i",
-        default=["images.txt"],
+        "inputs",
         nargs="+",
         help="list of input files with list of remote images to pull, retag and push (default: images.txt)",
     )
@@ -57,6 +55,13 @@ async def main():
         default="harbor.cumulus.openstack.hpc.cam.ac.uk/magnum",
         help="name of the local registry to retag and push images to (default: 10.60.253.37/magnum)",
     )
+    parser.add_argument(
+        "--filter",
+        "-f",
+        default="",
+        required=False,
+        help="filter images (default: '')",
+    )
     args = parser.parse_args()
 
     if not args.inputs:
@@ -65,7 +70,10 @@ async def main():
         sys.exit(1)
 
     for fname in args.inputs:
-        images = read_images(fname)
+        filters = [lambda x: x, lambda x: not x.startswith("#")]
+        if args.filter:
+            filters.append(lambda x: args.filter in x)
+        images = read_images(fname, filters)
         max_width = max([len(i) for i in images])
 
         print("Pulling images in %s" % fname)

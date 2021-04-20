@@ -3,24 +3,24 @@
 variable "templates" {
   type = map(any)
   default = {
-    "k8s-1.18.16" = {
+    "k8s-1.19.10" = {
       image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
-        kube_tag           = "v1.18.16-rancher1"
-        cloud_provider_tag = "v1.18.2"
-      }
-    }
-    "k8s-1.19.8" = {
-      image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
-      labels = {
-        kube_tag           = "v1.19.8-rancher1"
+        kube_tag           = "v1.19.10"
         cloud_provider_tag = "v1.19.2"
       }
     }
-    "k8s-1.20.4" = {
+    "k8s-1.20.6" = {
       image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
-        kube_tag           = "v1.20.4-rancher1"
+        kube_tag           = "v1.20.6"
+        cloud_provider_tag = "v1.20.0"
+      }
+    }
+    "k8s-1.21.0" = {
+      image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
+      labels = {
+        kube_tag           = "v1.21.0"
         cloud_provider_tag = "v1.20.0"
       }
     }

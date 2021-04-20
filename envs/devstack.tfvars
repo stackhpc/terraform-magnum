@@ -7,7 +7,7 @@ cluster_labels = {
 
 clusters = {
   "k8s-1.20" = {
-    template = "k8s-1.20.4"
+    template = "k8s-1.21.0"
     labels = {
     }
   }
