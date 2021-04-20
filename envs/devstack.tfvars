@@ -6,11 +6,11 @@ cluster_labels = {
 }
 
 clusters = {
-  "k8s-1.20" = {
+  "k8s-devstack" = {
     template = "k8s-1.21.0"
     labels = {
     }
   }
 }
 
-kubeconfig = "k8s-1.20"
+kubeconfig = "k8s-devstack"
