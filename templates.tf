@@ -14,14 +14,14 @@ variable "templates" {
       image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
         kube_tag           = "v1.20.6"
-        cloud_provider_tag = "v1.20.0"
+        cloud_provider_tag = "v1.20.2"
       }
     }
     "k8s-1.21.0" = {
       image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
         kube_tag           = "v1.21.0"
-        cloud_provider_tag = "v1.20.0"
+        cloud_provider_tag = "v1.20.2"
       }
     }
   }

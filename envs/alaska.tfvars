@@ -9,7 +9,6 @@ flavor              = "general.v1.tiny"
 floating_ip_enabled = true
 master_lb_enabled   = false
 volume_driver       = ""
-insecure_registry   = "10.60.253.37"
 create_timeout      = 60
 
 template_labels = {
@@ -19,13 +18,12 @@ template_labels = {
   auto_healing_enabled    = "true"
   auto_healing_controller = "magnum-auto-healer"
   magnum_auto_healer_tag  = "v1.20.0"
-  ingress_controller      = "nginx"
 }
 
 clusters = {
   "k8s-alaska" = {
-    template = "k8s-1.18.15"
-    flavor   = "compute-A"
+    template = "k8s-1.21.0"
+    flavor   = "compute-GPU"
     labels = {
     }
   }
@@ -33,25 +31,25 @@ clusters = {
 kubeconfig = "k8s-alaska"
 
 extra_templates = {
-  "k8s-1.18.15" = {
+  "k8s-1.19.10" = {
     image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.18.15-rancher1"
-      cloud_provider_tag = "v1.18.0"
+      kube_tag           = "v1.19.10"
+      cloud_provider_tag = "v1.19.2"
     }
   }
-  "k8s-1.19.7" = {
+  "k8s-1.20.6" = {
     image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.19.7-rancher1"
-      cloud_provider_tag = "v1.19.0"
+      kube_tag           = "v1.20.6"
+      cloud_provider_tag = "v1.20.2"
     }
   }
-  "k8s-1.20.2" = {
+  "k8s-1.21.0" = {
     image = "fedora-coreos-32.20201018.3.0-openstack.x86_64"
     labels = {
-      kube_tag           = "v1.20.2-rancher1"
-      cloud_provider_tag = "v1.20.0"
+      kube_tag           = "v1.21.0"
+      cloud_provider_tag = "v1.20.2"
     }
   }
 }
