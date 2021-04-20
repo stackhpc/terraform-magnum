@@ -13,7 +13,9 @@ Install dependencies:
 
     ./site/install-deps.sh
 
-Upload the latest stable Fedora Coreos image to glance:
+## Upload OS image
+
+Upload the latest stable Fedora CoreOS image to Glance:
 
     ./site/upload-coreos.sh
 
@@ -21,9 +23,11 @@ Upload the last ever Fedora Atomic image to Glance (DEPRECATED):
 
     ./site/upload-atomic.sh
 
+## Prepare registry
+
 Pull retag and push list of images to a local container registry:
 
-    ./site/pull-retag-push.py -r harbor.cumulus.openstack.hpc.cam.ac.uk/magnum -i images/master.txt
+    ./site/pull-retag-push.py images/master.txt
 
     Pulling images in master.txt
     rancher/hyperkube:v1.19.1-rancher1                                   | exists locally
