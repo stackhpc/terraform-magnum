@@ -1,24 +1,22 @@
 # kube_tag: https://github.com/rancher/hyperkube/tags
 # cloud_provider_tag: https://github.com/kubernetes/cloud-provider-openstack/tags
+
 variable "templates" {
   type = map(any)
   default = {
     "k8s-1.19.10" = {
-      image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
         kube_tag           = "v1.19.10"
         cloud_provider_tag = "v1.19.2"
       }
     }
     "k8s-1.20.6" = {
-      image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
         kube_tag           = "v1.20.6"
         cloud_provider_tag = "v1.20.2"
       }
     }
     "k8s-1.21.0" = {
-      image = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
       labels = {
         kube_tag           = "v1.21.0"
         cloud_provider_tag = "v1.20.2"
@@ -43,6 +41,11 @@ variable "template_labels" {
     master_lb_floating_ip_enabled = "true"
     cinder_csi_enabled            = "true"
   }
+}
+
+variable "image" {
+  type    = string
+  default = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
 }
 
 variable "floating_ip_enabled" {
@@ -111,7 +114,7 @@ resource "openstack_containerinfra_clustertemplate_v1" "templates" {
   docker_storage_driver = "overlay2"
   server_type           = "vm"
   tls_disabled          = var.tls_disabled
-  image                 = each.value.image
+  image                 = lookup(each.value, "image", var.image)
   volume_driver         = var.volume_driver
   external_network_id   = var.external_network
   master_lb_enabled     = var.master_lb_enabled
