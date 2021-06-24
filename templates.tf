@@ -45,7 +45,7 @@ variable "template_labels" {
 
 variable "image" {
   type    = string
-  default = "fedora-coreos-33.20210301.3.1-openstack.x86_64"
+  default = "fedora-coreos-34.20210529.3.0-openstack.x86_64"
 }
 
 variable "floating_ip_enabled" {
