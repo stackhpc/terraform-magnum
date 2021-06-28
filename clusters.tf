@@ -81,5 +81,6 @@ resource "null_resource" "kubeconfig" {
 }
 
 output "clusters" {
-  value = openstack_containerinfra_cluster_v1.clusters
+  value     = openstack_containerinfra_cluster_v1.clusters
+  sensitive = true
 }
