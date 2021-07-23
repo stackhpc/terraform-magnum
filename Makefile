@@ -2,6 +2,7 @@ HELM ?=v3.6.1
 HELM2 ?=v2.17.0
 SONOBUOY ?= 0.52.0
 TERRAFORM ?= 1.0.3
+KUBECTL ?= $(shell curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 
 OS = $(shell lsb_release -si)
 ifeq ($(OS),Ubuntu)
@@ -42,7 +43,7 @@ terraform: unzip
 
 # Install latest kubectl
 kubectl:
-	curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
+	curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBECTL}/bin/linux/amd64/kubectl && \
 	chmod +x kubectl && \
 	sudo mv kubectl /usr/local/bin/kubectl
 
