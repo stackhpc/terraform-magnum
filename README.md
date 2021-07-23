@@ -11,7 +11,7 @@ Calico and another with Flannel.
 
 Install dependencies:
 
-    ./site/install-deps.sh
+    make deps
 
 ## Upload OS image
 
@@ -198,6 +198,7 @@ Helm should be installed as part of `./site/install-deps.sh` script.
 
 If using Helm v2, source `magnum-tiller.sh` to use tiller installed in the `magnum-tiller` namespace.
 
+    make helm2
     source ./site/magnum-tiller.sh
     helm2 version
 
