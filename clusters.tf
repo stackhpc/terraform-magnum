@@ -51,13 +51,15 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   for_each            = var.clusters
   name                = each.key
   cluster_template_id = openstack_containerinfra_clustertemplate_v1.templates[each.value.template].id
-  master_count        = var.master_count
-  node_count          = var.node_count
-  keypair             = openstack_compute_keypair_v2.keypair.id
-  create_timeout      = var.create_timeout
-  floating_ip_enabled = openstack_containerinfra_clustertemplate_v1.templates[each.value.template].floating_ip_enabled # there is a terraform-openstack-provider bug which defaults floating ip enabled to False when it is unset so use value from the template
+  master_count        = lookup(each.value, "master_count", var.master_count)
+  node_count          = lookup(each.value, "node_count", var.node_count)
+  keypair             = lookup(each.value, "keypair", openstack_compute_keypair_v2.keypair.id)
+  create_timeout      = lookup(each.value, "create_timeout", var.create_timeout)
+  floating_ip_enabled = lookup(each.value, "floating_ip_enabled", var.floating_ip_enabled)
   flavor              = lookup(each.value, "flavor", var.flavor)
   master_flavor       = lookup(each.value, "master_flavor", var.master_flavor)
+  fixed_network       = lookup(each.value, "fixed_network", var.fixed_network)
+  fixed_subnet        = lookup(each.value, "fixed_subnet", var.fixed_subnet)
   labels              = merge(openstack_containerinfra_clustertemplate_v1.templates[each.value.template].labels, var.cluster_labels, lookup(each.value, "labels", {}))
 }
 

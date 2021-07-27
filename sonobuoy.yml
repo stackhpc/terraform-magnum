@@ -1,8 +1,1 @@
-buildImageRegistry: k8s.gcr.io/build-image
-dockerGluster: harbor.cumulus.openstack.hpc.cam.ac.uk/sonobuoy #docker.io/gluster
-dockerLibraryRegistry: harbor.cumulus.openstack.hpc.cam.ac.uk/sonobuoy #docker.io/library
-e2eRegistry: gcr.io/kubernetes-e2e-test-images
-e2eVolumeRegistry: gcr.io/kubernetes-e2e-test-images/volume
-gcRegistry: k8s.gcr.io
-promoterE2eRegistry: k8s.gcr.io/e2e-test-images
-sigStorageRegistry: k8s.gcr.io/sig-storage
+dockerLibraryRegistry: ghcr.io/stackhpc

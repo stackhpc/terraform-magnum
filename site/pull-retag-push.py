@@ -52,8 +52,8 @@ async def main():
     parser.add_argument(
         "--registry",
         "-r",
-        default="harbor.cumulus.openstack.hpc.cam.ac.uk/magnum",
-        help="name of the local registry to retag and push images to (default: 10.60.253.37/magnum)",
+        default="ghcr.io/stackhpc",
+        help="name of the local registry to retag and push images to (default: ghcr.io/stackhpc)",
     )
     parser.add_argument(
         "--filter",
