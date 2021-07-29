@@ -4,22 +4,22 @@
 variable "templates" {
   type = map(any)
   default = {
-    "k8s-1.19.10" = {
+    "k8s-1.19.12" = {
       labels = {
-        kube_tag           = "v1.19.10"
+        kube_tag           = "v1.19.12"
         cloud_provider_tag = "v1.19.2"
       }
     }
-    "k8s-1.20.6" = {
+    "k8s-1.20.8" = {
       labels = {
-        kube_tag           = "v1.20.6"
+        kube_tag           = "v1.20.8"
         cloud_provider_tag = "v1.20.2"
       }
     }
-    "k8s-1.21.0" = {
+    "k8s-1.21.2" = {
       labels = {
-        kube_tag           = "v1.21.0"
-        cloud_provider_tag = "v1.20.2"
+        kube_tag           = "v1.21.2"
+        cloud_provider_tag = "v1.21.0"
       }
     }
   }
