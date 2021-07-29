@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 LATEST=$(curl -s https://builds.coreos.fedoraproject.org/streams/stable.json | python3 -c "import json, sys; print(json.loads(sys.stdin.read())['architectures']['x86_64']['artifacts']['openstack']['release'])")
-DEFAULT=34.20210529.3.0
+DEFAULT=33.20210426.3.0 #34.20210529.3.0
 echo $1
 DATE=${1:-$DEFAULT}
 STREAM=${STREAM:-stable}
