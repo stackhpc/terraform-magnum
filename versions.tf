@@ -11,8 +11,6 @@ terraform {
       source = "hashicorp/null"
     }
   }
-}
-
-terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.0.3"
+  experiments      = [module_variable_optional_attrs]
 }

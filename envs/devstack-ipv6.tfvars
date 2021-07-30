@@ -7,12 +7,15 @@ cluster_labels = {
 }
 
 clusters = {
-  "k8s-devstack" = {
+  "k8s-ipv6" = {
     template            = "k8s-1.21.2"
-    floating_ip_enabled = "true"
+    fixed_network       = "private"
+    fixed_subnet        = "private-subnet"
     labels = {
+      fixed_ipv6_subnet = "ipv6-private-subnet"
+      container_runtime = "containerd"
     }
   }
 }
 
-kubeconfig = "k8s-devstack"
+kubeconfig = "k8s-ipv6"

@@ -1,7 +1,18 @@
 variable "clusters" {
-  type = map(any)
-  default = {
-  }
+  type = map(object({
+    template            = optional(string)
+    master_count        = optional(number)
+    node_count          = optional(number)
+    keypair             = optional(string)
+    create_timeout      = optional(number)
+    floating_ip_enabled = optional(string)
+    flavor              = optional(string)
+    master_flavor       = optional(string)
+    fixed_network       = optional(string)
+    fixed_subnet        = optional(string)
+    labels              = optional(map(string))
+  }))
+  default = {}
 }
 
 variable "cluster_labels" {
