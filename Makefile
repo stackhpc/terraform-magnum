@@ -47,8 +47,11 @@ kubectl:
 	chmod +x kubectl && \
 	sudo mv kubectl /usr/local/bin/kubectl
 
+jq:
+	sudo ${PM} install jq -y
+
 # Install latest known sonobuoy
-sonobuoy:
+sonobuoy: jq
 	curl -L "https://github.com/vmware-tanzu/sonobuoy/releases/download/v${SONOBUOY}/sonobuoy_${SONOBUOY}_linux_amd64.tar.gz" --output sonobuoy.tar.gz && \
 	mkdir -p tmp && \
 	tar -xzf sonobuoy.tar.gz -C tmp/ && \
