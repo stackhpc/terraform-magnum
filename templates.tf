@@ -19,7 +19,7 @@ variable "templates" {
     "k8s-1.21.2" = {
       labels = {
         kube_tag           = "v1.21.2"
-        cloud_provider_tag = "v1.21.0"
+        cloud_provider_tag = "v1.20.2"
       }
     }
   }
