@@ -1,3 +1,8 @@
 #!/bin/bash
 set -x
-`dirname $0`/cluster.sh "$1" "$2" "destroy"
+DIR=`dirname $0`/..
+TFDIR=`realpath $DIR`
+TFVARS=${1:-$TFDIR/terraform.tfvars}
+TFSTATE=${2:-$TFDIR/terraform.tfstate}
+ACTION=${3:-destroy}
+terraform $ACTION -var-file=$TFVARS -state=$TFSTATE
