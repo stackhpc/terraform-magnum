@@ -254,7 +254,7 @@ When developing terraform plugin, place the following in your `~/.terraformrc`:
 
 To run sonobuoy conformance test:
 
-    sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.52.0 --systemd-logs-image ghcr.io/stackhpc/systemd-logs:v0.3 --mode=certified-conformance
+    sonobuoy run --sonobuoy-image ghcr.io/stackhpc/sonobuoy:v0.52.0 --systemd-logs-image ghcr.io/stackhpc/systemd-logs:v0.3 --mode=certified-conformance
 
 To view the status of the test while it is running:
 
@@ -265,3 +265,7 @@ To dump the results to file when it is complete:
     DIR=k8s-conformance/`kubectl version --short=true | grep Server | cut -f3 -d' '`/openstack-magnum/results; mkdir -p $DIR; pushd $DIR
     outfile=$(sonobuoy retrieve); tar xzf $outfile -C ./; cp plugins/e2e/results/global/* ./
     popd
+
+To clean up:
+
+    sonobuoy delete --all
