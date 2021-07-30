@@ -29,9 +29,7 @@ def pull(image, max_width):
     print(" | ".join(cols))
 
 
-def push(local_registry, image, max_width):
-    _, name = image.rsplit("/", maxsplit=1)
-    local_image = "/".join([local_registry, name])
+def push(image, local_image, max_width):
     try:
         d.api.tag(image, local_image)
         error = json.loads(d.images.push(local_image).splitlines()[-1]).get("error")
@@ -82,9 +80,12 @@ async def main():
         print("---")
 
         print("Pushing images in %s" % fname)
+        local_images = ["{}/{}".format(args.registry, image.rsplit("/", maxsplit=1)[-1]) for image in images]
+        max_width = max([len(i) for i in local_images])
+
         tasks = [
-            loop.run_in_executor(None, push, args.registry, image, max_width)
-            for image in images
+            loop.run_in_executor(None, push, image, local_image, max_width)
+            for image, local_image in zip(images, local_images)
         ]
         await asyncio.gather(*tasks)
         print("---")

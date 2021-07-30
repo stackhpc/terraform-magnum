@@ -16,6 +16,7 @@ k8scloudprovider/magnum-auto-healer:v1.20.0
 k8scloudprovider/openstack-cloud-controller-manager:v1.18.2
 k8scloudprovider/openstack-cloud-controller-manager:v1.19.2
 k8scloudprovider/openstack-cloud-controller-manager:v1.20.2
+k8scloudprovider/openstack-cloud-controller-manager:v1.21.0
 kiwigrid/k8s-sidecar:0.1.99
 kubernetesui/dashboard:v2.0.0
 kubernetesui/metrics-scraper:v1.0.4
@@ -39,8 +40,13 @@ quay.io/k8scsi/csi-snapshotter:v1.2.2
 quay.io/prometheus/alertmanager:v0.20.0
 quay.io/prometheus/node-exporter:v0.18.1
 quay.io/prometheus/prometheus:v2.15.2
-ghcr.io/stackhpc/hyperkube:v1.18.16
-ghcr.io/stackhpc/hyperkube:v1.19.8
+docker.io/rancher/hyperkube:v1.18.16-rancher1
+docker.io/rancher/hyperkube:v1.19.8-rancher1
+docker.io/rancher/hyperkube:v1.20.4-rancher1
+ghcr.io/stackhpc/hyperkube:v1.19.10
+ghcr.io/stackhpc/hyperkube:v1.19.12
 ghcr.io/stackhpc/hyperkube:v1.20.6
+ghcr.io/stackhpc/hyperkube:v1.20.8
 ghcr.io/stackhpc/hyperkube:v1.21.0
+ghcr.io/stackhpc/hyperkube:v1.21.2
 squareup/ghostunnel:v1.5.2
