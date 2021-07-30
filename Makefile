@@ -4,7 +4,7 @@ SONOBUOY ?= 0.52.0
 TERRAFORM ?= 1.0.3
 KUBECTL ?= $(shell curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 
-OS = $(shell lsb_release -si)
+OS = $(shell lsb_release -si || echo Centos)
 ifeq ($(OS),Ubuntu)
 	PM = apt
 else ifeq ($(OS),Centos)
