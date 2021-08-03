@@ -1,15 +1,15 @@
 variable "clusters" {
   type = map(object({
-    template            = optional(string)
-    master_count        = optional(number)
-    node_count          = optional(number)
-    keypair             = optional(string)
-    create_timeout      = optional(number)
-    floating_ip_enabled = optional(string)
-    flavor              = optional(string)
-    master_flavor       = optional(string)
-    fixed_network       = optional(string)
-    fixed_subnet        = optional(string)
+    template            = optional(any)
+    master_count        = optional(any)
+    node_count          = optional(any)
+    keypair             = optional(any)
+    create_timeout      = optional(any)
+    floating_ip_enabled = optional(any)
+    flavor              = optional(any)
+    master_flavor       = optional(any)
+    fixed_network       = optional(any)
+    fixed_subnet        = optional(any)
     labels              = optional(map(string))
   }))
   default = {}
@@ -62,15 +62,15 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
   for_each            = var.clusters
   name                = each.key
   cluster_template_id = openstack_containerinfra_clustertemplate_v1.templates[each.value.template].id
-  master_count        = lookup(each.value, "master_count", var.master_count)
-  node_count          = lookup(each.value, "node_count", var.node_count)
-  keypair             = lookup(each.value, "keypair", openstack_compute_keypair_v2.keypair.id)
-  create_timeout      = lookup(each.value, "create_timeout", var.create_timeout)
-  floating_ip_enabled = lookup(each.value, "floating_ip_enabled", var.floating_ip_enabled)
-  flavor              = lookup(each.value, "flavor", var.flavor)
-  master_flavor       = lookup(each.value, "master_flavor", var.master_flavor)
-  fixed_network       = lookup(each.value, "fixed_network", var.fixed_network)
-  fixed_subnet        = lookup(each.value, "fixed_subnet", var.fixed_subnet)
+  master_count        = lookup(each.value, "master_count") != null ? lookup(each.value, "master_count") : var.master_count
+  node_count          = lookup(each.value, "node_count") != null ? lookup(each.value, "node_count") : var.node_count
+  keypair             = lookup(each.value, "keypair") != null ? lookup(each.value, "keypair") : openstack_compute_keypair_v2.keypair.id
+  create_timeout      = lookup(each.value, "create_timeout") != null ? lookup(each.value, "create_timeout") : var.create_timeout
+  floating_ip_enabled = lookup(each.value, "floating_ip_enabled") != null ? lookup(each.value, "floating_ip_enabled") : var.floating_ip_enabled
+  flavor              = lookup(each.value, "flavor") != null ? lookup(each.value, "flavor") : var.flavor
+  master_flavor       = lookup(each.value, "master_flavor") != null ? lookup(each.value, "master_flavor") : var.master_flavor
+  fixed_network       = lookup(each.value, "fixed_network") != null ? lookup(each.value, "fixed_network") : var.fixed_network
+  fixed_subnet        = lookup(each.value, "fixed_subnet") != null ? lookup(each.value, "fixed_subnet") : var.fixed_subnet
   labels              = merge(openstack_containerinfra_clustertemplate_v1.templates[each.value.template].labels, var.cluster_labels, lookup(each.value, "labels", {}))
 }
 
@@ -94,6 +94,5 @@ resource "null_resource" "kubeconfig" {
 }
 
 output "clusters" {
-  value     = openstack_containerinfra_cluster_v1.clusters
-  sensitive = true
+  value = var.clusters
 }
