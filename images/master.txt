@@ -15,6 +15,7 @@ k8scloudprovider/k8s-keystone-auth:v1.18.0
 k8scloudprovider/magnum-auto-healer:v1.20.0
 k8scloudprovider/openstack-cloud-controller-manager:v1.18.2
 k8scloudprovider/openstack-cloud-controller-manager:v1.19.2
+k8scloudprovider/openstack-cloud-controller-manager:v1.20.0
 k8scloudprovider/openstack-cloud-controller-manager:v1.20.2
 k8scloudprovider/openstack-cloud-controller-manager:v1.21.0
 kiwigrid/k8s-sidecar:0.1.99
