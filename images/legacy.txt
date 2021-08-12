@@ -1,0 +1,5 @@
+gcr.io/google_containers/pause:3.0
+k8s.gcr.io/etcd:3.3.17
+k8s.gcr.io/hyperkube:v1.17.2
+quay.io/calico/cni:v3.3.6
+quay.io/calico/node:v3.3.6
