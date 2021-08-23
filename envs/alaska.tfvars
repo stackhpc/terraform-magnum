@@ -13,19 +13,16 @@ create_timeout      = 60
 
 template_labels = {
   container_infra_prefix = "harbor.cumulus.openstack.hpc.cam.ac.uk/magnum/"
-  monitoring_enabled      = "true"
-  auto_scaling_enabled    = "true"
-  auto_healing_enabled    = "true"
-  auto_healing_controller = "magnum-auto-healer"
-  magnum_auto_healer_tag  = "v1.20.0"
+  monitoring_enabled     = "true"
+  auto_scaling_enabled   = "false"
+  auto_healing_enabled   = "false"
 }
 
 clusters = {
   "k8s-alaska" = {
-    template = "k8s-1.21.0"
-    flavor   = "gpu.v1.medium"
+    template = "k8s-1.21.2"
     labels = {
-      selinux_mode = "disabled"
+      selinux_mode = "permissive"
     }
   }
 }
