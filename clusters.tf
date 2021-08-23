@@ -75,10 +75,11 @@ resource "openstack_containerinfra_cluster_v1" "clusters" {
 }
 
 resource "local_file" "kubeconfigs" {
-  for_each   = var.clusters
-  content    = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kubeconfig", { raw_config : null }).raw_config
-  filename   = pathexpand("~/.kube/${each.key}/config")
-  depends_on = [openstack_containerinfra_cluster_v1.clusters]
+  for_each        = var.clusters
+  content         = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, each.key, {}), "kubeconfig", { raw_config : null }).raw_config
+  filename        = pathexpand("~/.kube/${each.key}/config")
+  file_permission = "0600"
+  depends_on      = [openstack_containerinfra_cluster_v1.clusters]
 }
 
 resource "null_resource" "kubeconfig" {
@@ -87,7 +88,7 @@ resource "null_resource" "kubeconfig" {
   }
 
   provisioner "local-exec" {
-    command = "ln -fs ~/.kube/${var.kubeconfig}/config ~/.kube/config"
+    command = "ln -fs ~/.kube/${var.kubeconfig}/config ~/.kube/config; chmod 600 ~/.kube/config"
   }
 
   depends_on = [local_file.kubeconfigs]
