@@ -1,8 +1,9 @@
 HELM ?=v3.6.1
 HELM2 ?=v2.17.0
-SONOBUOY ?= 0.52.0
+SONOBUOY ?= 0.53.0
 TERRAFORM ?= 1.0.3
 KUBECTL ?= $(shell curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+CLUSTERCTL ?= 0.4.0
 
 OS = $(shell lsb_release -si || echo CentOS)
 ifeq ($(OS),Ubuntu)
@@ -47,6 +48,11 @@ kubectl:
 	chmod +x kubectl && \
 	sudo mv kubectl /usr/local/bin/kubectl
 
+# Install latest known clusterctl
+clusterctl:
+	curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v${CLUSTERCTL}/clusterctl-linux-amd64 -o clusterctl && \
+	chmod +x clusterctl && \
+	sudo mv clusterctl /usr/local/bin/clusterctl
 jq:
 	sudo ${PM} install jq -y
 
