@@ -65,3 +65,14 @@ sonobuoy: jq
 	sudo mv tmp/sonobuoy /usr/local/bin/sonobuoy && \
 	rm -rf sonobuoy.tar.gz tmp
 
+# Run conformance
+conformance:
+	sonobuoy run --sonobuoy-image ghcr.io/stackhpc/sonobuoy:v${SONOBUOY} --systemd-logs-image ghcr.io/stackhpc/systemd-logs:v0.3 --mode=certified-conformance
+
+# Retrieve conformance results, requires kubectl
+retrieve:
+	DIR=k8s-conformance/`kubectl version --short=true | grep Server | cut -f3 -d' '`/results
+	mkdir -p ${DIR}; cd ${DIR}
+	outfile=`sonobuoy retrieve`
+	tar xzf ${outfile} -C ./
+	cp plugins/e2e/results/global/* ./
