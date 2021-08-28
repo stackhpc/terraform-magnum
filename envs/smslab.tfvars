@@ -12,7 +12,12 @@ clusters = {
   "k8s-smslab" = {
     template            = "k8s-1.21.2"
     floating_ip_enabled = "true"
+    flavor           = "general.v1.small"
     labels = {
+      etcd_volume_size = 1
+      monitoring_enabled = "false"
+      auto_healing_enabled = "false"
+      auto_scaling_enabled = "false"
     }
   }
 }

@@ -33,7 +33,7 @@ resource "null_resource" "bastion" {
   triggers = {
     host       = openstack_compute_instance_v2.bastion[count.index].access_ip_v4
     packages   = "helm kubectl clusterctl sonobuoy"
-    kubeconfig = file(pathexpand("~/.kube/config"))
+    kubeconfig = lookup(lookup(openstack_containerinfra_cluster_v1.clusters, var.kubeconfig, {}), "kubeconfig", { raw_config : null }).raw_config
   }
 
   connection {
@@ -51,13 +51,12 @@ resource "null_resource" "bastion" {
 
   provisioner "remote-exec" {
     inline = [
+      "mkdir -p ~/.kube; mv /tmp/config ~/.kube/config; chmod 600 ~/.kube/config",
       "git clone --depth 1 https://github.com/stackhpc/terraform-magnum",
       "cd terraform-magnum",
       "make ${self.triggers.packages}",
-      "mkdir -p ~/.kube; mv /tmp/config ~/.kube/config; chmod 600 ~/.kube/config",
     ]
   }
-  depends_on = [null_resource.kubeconfig]
 }
 
 output "bastion" {
