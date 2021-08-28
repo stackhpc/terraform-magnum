@@ -1,6 +1,6 @@
 HELM ?=v3.6.1
 HELM2 ?=v2.17.0
-SONOBUOY ?= 0.53.0
+SONOBUOY ?= 0.53.2
 TERRAFORM ?= 1.0.3
 KUBECTL ?= $(shell curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 CLUSTERCTL ?= 0.4.0
