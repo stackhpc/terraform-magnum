@@ -70,9 +70,10 @@ conformance:
 	sonobuoy run --sonobuoy-image ghcr.io/stackhpc/sonobuoy:v${SONOBUOY} --systemd-logs-image ghcr.io/stackhpc/systemd-logs:v0.3 --mode=certified-conformance
 
 # Retrieve conformance results, requires kubectl
-retrieve:
-	DIR=k8s-conformance/`kubectl version --short=true | grep Server | cut -f3 -d' '`/results
-	mkdir -p ${DIR}; cd ${DIR}
-	outfile=`sonobuoy retrieve`
-	tar xzf ${outfile} -C ./
-	cp plugins/e2e/results/global/* ./
+result:
+	$(eval dir=k8s-conformance/$(shell kubectl version --short=true | grep Server | cut -f3 -d' ')/)
+	$(eval output=$(shell sonobuoy retrieve))
+	mkdir -p /tmp/${output} ${dir}
+	tar xzf ${output} -C /tmp/${output}
+	cp /tmp/${output}/plugins/e2e/results/global/* ${dir}
+	rm -rf /tmp/${output} ${output}

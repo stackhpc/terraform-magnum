@@ -262,7 +262,7 @@ To view the status of the test while it is running:
 
 To dump the results to file when it is complete:
 
-    make retrieve
+    make result
 
 To clean up:
 
